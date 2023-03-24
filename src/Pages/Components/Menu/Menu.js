@@ -34,7 +34,6 @@ import SettingsModal from "./Components/SettingsModal";
 
 
 function Menu() {
-    console.log("here")
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isPricingOpen, setIsPricingOpen] = useState(false);
     const [isHelpOpen, setIsHelpOpen] = useState(false);

@@ -4,51 +4,32 @@ import * as htmlToImage from 'html-to-image';
 
 import {
   Stack,
+  Spinner,
   IconButton,
   Text,
   Input,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  Button,
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   useDisclosure,
   Icon,
 } from "@chakra-ui/react";
 
+import {  FaPlus } from 'react-icons/fa';
+import { AiOutlineFile, AiFillFile } from 'react-icons/ai'; 
 
-
-import { FaBars, FaPlus, FaCog, FaDollarSign, FaQuestionCircle } from 'react-icons/fa';
-import { AiOutlineFile, AiFillFile, AiOutlineRobot,AiOutlineCloud,AiOutlineDashboard } from 'react-icons/ai'; 
-import { FaFileAlt, FaFile, FaEdit, FaPencilAlt } from 'react-icons/fa';
-
-import { Link } from 'react-router-dom';
-
-import HelpModal from "../Components/Menu/Components/HelpModal";
-import PricingModal from "../Components/Menu/Components/PricingModal";
-import SettingsModal from "../Components/Menu/Components/SettingsModal";
-
-// import Menu from "../Components/Menu/Menu";
-import ImageGenerator from '../Components/ImageGenerator/ImageGenerator'
 import { fetchEssays } from "../Components/fetch";
+import Menu from "../Components/Menu/Menu";
 
 
 function HomePage() {
 
   const [usrData, setUsrData] = useState('');
   const [essays, setEssays] = useState({});
-  const [renderedEssays, setRenderedEssays] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [filteredSquares, setFilteredSquares] = useState([{},{}]);
+  const [searchText, setSearchText] = useState('');
+  const nav = useNavigate();
   
-
-  useEffect(() => {
+  useEffect(() => { // retrieve user data from localstorage
     const data = JSON.parse(localStorage.getItem("data"));
     console.log(data)
     if (data) {
@@ -57,140 +38,73 @@ function HomePage() {
   }, []);
   
   useEffect(() => {
-    if (usrData) {
+    if (usrData) { // fetch and set essays
       fetchEssays(usrData).then((result) => {
+        console.log(result)
         if (result.status == "error") {
           nav('/') // with message saying session expired
         }
         setEssays(result)
       }).catch((error) => {console.log(error)})
     }
-  }, [usrData]);
-
+  }, [usrData])
+  
   useEffect(() => {
-    if (Object.keys(essays).length > 0) {
-      setRenderedEssays(false);
-    }
-  }, [essays]);
-
-  useEffect(() => {
-    console.log("HELLO MAKING IMAGES")
-    if (!renderedEssays && Object.keys(essays).length > 0) {
-      const updatedEssays = {...essays};
-      const promises = updatedEssays.data.map((essay, index) => {
-        return new Promise((resolve, reject) => {
+    if (essays) { // check if essays has been set
+      try { // generate images and store them in object
+        const promises = essays.data.map((essay) => {
           const div = document.createElement('div');
           div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + essay.content+ "</body></html>";
-          htmlToImage.toPng(div, { width: 800, height: 600 })
+          return htmlToImage.toPng(div, { width: 800, height: 600 })
             .then(dataUrl => {
-              updatedEssays.data[index].image = dataUrl;
-              updatedEssays.data[index].html = div;
-              resolve();
+              essay.image = dataUrl;
+              essay.html = div;
             })
             .catch(error => {
-              console.log(error);
-              reject();
+              // Handle errors
+              console.log(error)
             });
         });
-      });
-      Promise.all(promises).then(() => {
-        setEssays(updatedEssays);
-        setRenderedEssays(true);
-      }).catch((error) => {console.log(error)});
+  
+        Promise.all(promises).then(() => {
+          console.log("MADE IMAGES here")
+  
+          setLoading(false)
+  
+          
+        });
+  
+      } catch (error) { console.log(error) }
     }
-  }, [essays, renderedEssays]);
-
-  // useEffect(() => {
-  //   if (usrData) {
-  //     fetchEssays(usrData).then((result) => {
-  //       console.log(result)
-  //       if (result.status == "error") {
-  //         nav('/') // with message saying session expired
-  //       }
-    
-  //       setEssays(result)
-      
-  //     }).catch((error) => {console.log(error)})
-  //   }
-  // }, [usrData]);
-
-  // useEffect(() => {
-  //   //console.log(essays)
-  //   try {
-  //     for (let i = 0; i < essays.data.length; i++) {
-        
-  //       const div = document.createElement('div');
-  //       div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + essays.data[i].content+ "</body></html>";
-  //       //console.log(div)
-  //       htmlToImage.toPng(div, { width: 800, height: 600 })
-  //         .then(dataUrl => {
-  //           //console.log(dataUrl)
-  //           essays.data[i].image = dataUrl;
-  //           essays.data[i].html = div;
-  //           //console.log(essays)
-  //           // Do something with the data URL
-  //         })
-  //         .catch(error => {
-  //           // Handle errors
-  //           console.log(error)
-  //         });
-  //     }
-  //   } catch (error) { console.log(error) }
-
-  //   setTest(true)
-  // }, [usrData,essays])
+  }, [essays])
   
-  
-  // ImageGenerator("<h1>HELLO</h1>",5)
 
-  const nav = useNavigate();
+  useEffect(() => {
+    try {
+      setFilteredSquares(essays.data.filter(square =>
+        square.title.toLowerCase().includes(searchText.toLowerCase())
+      ))
+    } catch (error) {
+      console.log(error)
+    }
+  },[searchText,loading])
 
-  const [searchText, setSearchText] = useState('');
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   function handleSearch(event) {
     setSearchText(event.target.value);
   }
 
-    let filteredSquares = [{},{}]
-    try {
-      filteredSquares = essays.data.filter(square =>
-      square.title.toLowerCase().includes(searchText.toLowerCase())
-    );
-      } catch {
-
-      }
-
-  
-
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isPricingOpen, setIsPricingOpen] = useState(false);
-  const [isHelpOpen, setIsHelpOpen] = useState(false);
-
-  const openSettingsModal = () => setIsSettingsOpen(true);
-  const closeSettingsModal = () => setIsSettingsOpen(false);
-  const openPricingModal = () => setIsPricingOpen(true);
-  const closePricingModal = () => setIsPricingOpen(false);
-  const openHelpModal = () => setIsHelpOpen(true);
-  const closeHelpModal = () => setIsHelpOpen(false);
-  
-
-  const [data, setData] = useState({})
   const handleEssaySelect = (data) => {
     data.image = 0;
     data.html = 0;
     nav("/view", { state: data })
   }
 
-  const [test,setTest] = useState(false);
 
 
   return (
     
     <Box p={4}>
-      <SettingsModal isOpen={isSettingsOpen} onClose={closeSettingsModal} />
-      <PricingModal isOpen={isPricingOpen} onClose={closePricingModal} />
-      <HelpModal isOpen={isHelpOpen} onClose={closeHelpModal} />
       {/* Top bar */}
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         {/* Left button */}
@@ -222,41 +136,13 @@ function HomePage() {
           maxWidth="md"
         />
         {/* Right button */}
-        <IconButton
-          aria-label="Menu"
-          icon={<FaBars />}
-          size="md"
-          variant="outline"
-          onClick={onOpen}
-        />
+        <Menu/>
       </Stack>
 
-      {/* Drawer */}
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent bg="white" color="gray.700">
-          <DrawerCloseButton />
-          <Text fontSize="xl" fontWeight="bold" mt={4} mb={8}>
-            Menu
-          </Text>
-          <Stack spacing={4} pl={4}>
-            <Button variant="ghost" leftIcon={<FaCog />} onClick={() => setIsSettingsOpen(true)}>
-              Settings
-            </Button>
-            <Button variant="ghost" leftIcon={<FaDollarSign />} onClick={() => setIsPricingOpen(true)}>
-              Price
-            </Button>
-            <Button variant="ghost" leftIcon={<FaQuestionCircle />} onClick={() => setIsHelpOpen(true)}>
-              Help
-            </Button>
-            <Box pt={8} display="flex" justifyContent="center" alignItems="flex-end" bottom={0}>
-              <Link to="/privacy">Privacy Policy ·  </Link>
-              <Link to="/terms"> Terms of Service</Link>
-            </Box>
-          </Stack>
-        </DrawerContent>
-      </Drawer>
     {/* Array of squares */}
+    {loading ? (
+                   <Spinner size="xl" />
+                 ) : (
     <Stack direction="row" flexWrap="wrap" mt={4} justifyContent="center">
   {filteredSquares.map(square => (
     <Box key={square.id} w="25%" p={2}  onClick={() => { handleEssaySelect(square) }}>
@@ -299,7 +185,7 @@ function HomePage() {
       </Box>
     </Box>
   ))}
-</Stack>
+</Stack>)};
 
 
 
