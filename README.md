@@ -1,16 +1,25 @@
 ## QuickEssays
+![QuickEssays Logo](profilepic.jpg)
+
 Welcome to QuickEssays, a website that generates essays using OpenAI's language model. Our platform allows you to create an account, make payments, create and store essays.
 
 ## Guideline
 To create an essay on QuickEssays, you need to follow our guideline, which consists of the following:
 
 • Title
+
 • About
+
 • Length
+
 • Style
+
 • Tone
+
 • Audience
+
 • Perspective
+
 • Type of essay (Basic, Standard, or Premium)
 
 ## How it Works
