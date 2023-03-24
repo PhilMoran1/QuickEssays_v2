@@ -1,5 +1,5 @@
 ## QuickEssays
-![QuickEssays Logo](profilepic.jpg)
+![QuickEssays Logo](/public/profilepic.jpg)
 
 Welcome to QuickEssays, a website that generates essays using OpenAI's language model. Our platform allows you to create an account, make payments, create and store essays.
 
