@@ -1,5 +1,4 @@
-## QuickEssays
-![QuickEssays Logo](/public/profilepic.jpg)
+<h2 style="display: flex; align-items: center;"><img src="public/profilepic.jpg" alt="QuickEssays Logo" style="width: 2em; height: 2em; border-radius: 50%; margin-right: 0.5em;"> QuickEssays</h2>
 
 Welcome to QuickEssays, a website that generates essays using OpenAI's language model. Our platform allows you to create an account, make payments, create and store essays.
 
