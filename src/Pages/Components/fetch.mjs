@@ -1,8 +1,10 @@
 
+const URL = "https://8be9-37-133-87-18.eu.ngrok.io";
+// const URL = "http://localhost:3000"
 
-async function fetchEssays(usrData) {
+export async function fetchEssays(usrData) {
 
-    return await fetch('http://localhost:3000/retrieve-data', {
+    return await fetch(`${URL}/retrieve-data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,13 +28,13 @@ async function fetchEssays(usrData) {
 
 
 
-  async function createAccount(name,email,password) {
+  export async function createAccount(name,email,password) {
     console.log(name)
     console.log(email)
 
     console.log(password)
 
-    return await fetch('http://localhost:3000/create-account', {
+    return await fetch(`${URL}/create-account`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -55,9 +57,9 @@ async function fetchEssays(usrData) {
 
 
 
-  async function fetchLogin(email,password) {
+export async function fetchLogin(email,password) {
 
-    return await fetch('http://localhost:3000/login', {
+    return await fetch(`${URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -85,9 +87,18 @@ async function fetchEssays(usrData) {
       });
   }
 
+export async function createEssay(token, formData) {
 
-  module.exports = {
-    fetchEssays,
-    fetchLogin,
-    createAccount
+    return await fetch(`${URL}/create-data`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+
+      },
+      body: JSON.stringify({prompt: formData})
+    })
+      .then(response => response.text())
+      .then(data => {console.log(data);})
+      .catch(error => console.error(error));
   }

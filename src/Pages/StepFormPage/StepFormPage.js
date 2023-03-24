@@ -33,6 +33,7 @@ Icon
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import { RiHome2Line } from "react-icons/ri";
 import Menu from '../Components/Menu/Menu';
+import { createEssay } from "../Components/fetch.mjs";
 
 const styles = [
     "Narrative", 
@@ -190,22 +191,6 @@ const MultiStepForm = () => {
     setUsrData(JSON.parse(localStorage.getItem("data")))
   }, []) 
 
-  async function createEssay(prompt) {
-    const token = usrData.token;
-
-    await fetch('http://localhost:3000/create_essay', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-
-      },
-      body: JSON.stringify({prompt: formData})
-    })
-      .then(response => response.text())
-      .then(data => {console.log(data);})
-      .catch(error => console.error(error));
-  }
 
   const handleContinue = async () => {
     // Handle continue action
@@ -218,7 +203,7 @@ const MultiStepForm = () => {
     
     setIsWarningOpen(false);
     setCurrentStep(currentStep + 1)
-    await createEssay()
+    await createEssay(usrData.token, formData)
 
     nav("/home")
 

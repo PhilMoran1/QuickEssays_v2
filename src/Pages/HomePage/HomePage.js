@@ -16,7 +16,7 @@ import {
 import {  FaPlus } from 'react-icons/fa';
 import { AiOutlineFile, AiFillFile } from 'react-icons/ai'; 
 
-import { fetchEssays } from "../Components/fetch";
+import { fetchEssays } from "../Components/fetch.mjs";
 import Menu from "../Components/Menu/Menu";
 
 
