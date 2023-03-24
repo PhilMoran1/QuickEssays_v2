@@ -4,6 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 
+import { getConfig, createPaymentIntent } from "../../../fetch.mjs";
 function Payment(props) {
 
   const [usrData, setUsrData] = useState('');
@@ -22,29 +23,17 @@ function Payment(props) {
   const plan = props.plan;
   console.log(props.plan)
   useEffect(() => {
-    fetch("http://localhost:3000/config").then(async (r) => {
-      const { publishableKey } = await r.json();
-      setStripePromise(loadStripe(publishableKey));
-    });
+
+    getConfig().then((result) => {
+      setStripePromise(loadStripe(result));
+    }).catch((error) => { console.log("Couldnt fetch publishable key - ", error)})
+    
   }, []);
 
   useEffect(() => {
-
-    console.log(props);
-
-    fetch("http://localhost:3000/create-payment-intent", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        purchaser: {user: usrData, plan: props.plan}
-      })
-    }).then(async (result) => {
-      var { clientSecret } = await result.json();
-      console.log(clientSecret)
-      setClientSecret(clientSecret);
-    });
+    createPaymentIntent(usrData, props.plan).then((result) => {
+      setClientSecret(result)
+    }).catch((error) => { console.log("Couldnt create Payment Intent - " , error)})
   }, [usrData]);
 
   return (

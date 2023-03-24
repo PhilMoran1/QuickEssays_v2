@@ -1,3 +1,4 @@
+import { PaymentRequestButtonElement } from "@stripe/react-stripe-js";
 
 const URL = "https://8be9-37-133-87-18.eu.ngrok.io";
 // const URL = "http://localhost:3000"
@@ -89,7 +90,7 @@ export async function fetchLogin(email,password) {
 
 export async function createEssay(token, formData) {
 
-    return await fetch(`${URL}/create-data`, {
+    return await fetch(`${URL}/create-essay`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -102,3 +103,28 @@ export async function createEssay(token, formData) {
       .then(data => {console.log(data);})
       .catch(error => console.error(error));
   }
+
+
+export async function getConfig() {
+  return await fetch(`${URL}/config`).then(async (r) => {
+      const { publishableKey } = await r.json();
+      console.log(publishableKey)
+      return publishableKey;
+      // setStripePromise(loadStripe(publishableKey));
+    }).catch((error) => {console.log(error)});
+}
+
+export async function createPaymentIntent(usrData, plan) {
+  return await fetch(`${URL}/create-payment-intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        purchaser: {user: usrData, plan: plan}
+      })
+    }).then(async (result) => {
+      var { clientSecret } = await result.json();
+      return clientSecret;
+    });
+}

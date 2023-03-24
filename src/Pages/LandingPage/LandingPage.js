@@ -161,7 +161,7 @@ function LandingPage() {
       </Modal>
 
         <Box position="absolute" top="0" right="0" p={4}>
-        <Button onClick={handleLoginOpen} colorScheme="purple" size="md">
+        <Button onClick={handleLoginOpen} colorScheme="blue" size="md">
           Log in
         </Button>
       </Box>
@@ -188,7 +188,7 @@ function LandingPage() {
         <Text fontSize="xl" mb={12} color="#666">
           Powerful Essays written by the most advanced AI in the world!
         </Text>
-        <Button onClick={handleSignupOpen} colorScheme="purple" size="lg" mb={8}>
+        <Button onClick={handleSignupOpen} colorScheme="blue" size="lg" mb={8}>
           Get Started
         </Button>
         <Flex justify="space-between">
@@ -205,7 +205,7 @@ function LandingPage() {
               $2.99/mo
             </Text>
             <Text mb={6}>5 essays / 5 retries per essay</Text>
-            <Button colorScheme="purple" size="md">
+            <Button colorScheme="blue" size="md">
               Basic
             </Button>
           </Box>
@@ -222,7 +222,7 @@ function LandingPage() {
               $4.99/mo
             </Text>
             <Text mb={6}>10 essays / 15 retries per essay</Text>
-            <Button colorScheme="purple" size="md">
+            <Button colorScheme="blue" size="md">
               Standard
             </Button>
           </Box>
@@ -239,7 +239,7 @@ function LandingPage() {
               $9.99/mo
             </Text>
             <Text mb={6}>25 essays / 25 retries per essay</Text>
-            <Button colorScheme="purple" size="md">
+            <Button colorScheme="blue" size="md">
               Premium
             </Button>
           </Box>
