@@ -24,7 +24,7 @@ function Payment(props) {
   console.log(props.plan)
   useEffect(() => {
 
-    getConfig().then((result) => {
+    getConfig(usrData).then((result) => {
       setStripePromise(loadStripe(result));
     }).catch((error) => { console.log("Couldnt fetch publishable key - ", error)})
     

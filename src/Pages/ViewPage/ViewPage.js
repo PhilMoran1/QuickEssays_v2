@@ -48,7 +48,7 @@ const ViewPage = () => {
   
   const createPages = () => {
     console.log(content)
-    const maxPageLength = 1500;
+    const maxPageLength = 4500;
     const words = content.split(" ");
     let currentPage = 1;
     let currentPageContent = "";
@@ -91,6 +91,7 @@ const ViewPage = () => {
         },
         body: JSON.stringify({
           data: { essay_id: location.state.id }
+
         })
       })
         .then(response => response.text())

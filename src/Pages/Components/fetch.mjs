@@ -1,6 +1,5 @@
-import { PaymentRequestButtonElement } from "@stripe/react-stripe-js";
 
-const URL = "https://8be9-37-133-87-18.eu.ngrok.io";
+const URL = "https://26b0-37-133-87-18.eu.ngrok.io";
 // const URL = "http://localhost:3000"
 
 export async function fetchEssays(usrData) {
@@ -88,9 +87,9 @@ export async function fetchLogin(email,password) {
       });
   }
 
-export async function createEssay(token, formData) {
-
-    return await fetch(`${URL}/create-essay`, {
+export async function createEssay(usrData, formData) {
+    const token = usrData.token;
+    return await fetch(`${URL}/create_essay`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -98,27 +97,40 @@ export async function createEssay(token, formData) {
 
       },
       body: JSON.stringify({prompt: formData})
-    })
+    },)
       .then(response => response.text())
       .then(data => {console.log(data);})
       .catch(error => console.error(error));
   }
 
 
-export async function getConfig() {
-  return await fetch(`${URL}/config`).then(async (r) => {
+export async function getConfig(usrData) {
+  const token = usrData.token;
+  return await fetch(`${URL}/config`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+
+    }
+  
+  },).then(async (r) => {
+      
       const { publishableKey } = await r.json();
+      console.log("got pub key") 
       console.log(publishableKey)
       return publishableKey;
       // setStripePromise(loadStripe(publishableKey));
     }).catch((error) => {console.log(error)});
 }
 
-export async function createPaymentIntent(usrData, plan) {
+export async function createPaymentIntent(usrData, plan, token) {
   return await fetch(`${URL}/create-payment-intent`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+
       },
       body: JSON.stringify({
         purchaser: {user: usrData, plan: plan}

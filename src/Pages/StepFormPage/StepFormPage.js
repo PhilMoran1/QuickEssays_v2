@@ -203,7 +203,7 @@ const MultiStepForm = () => {
     
     setIsWarningOpen(false);
     setCurrentStep(currentStep + 1)
-    await createEssay(usrData.token, formData)
+    await createEssay(usrData, formData)
 
     nav("/home")
 

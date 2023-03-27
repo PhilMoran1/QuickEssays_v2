@@ -74,7 +74,9 @@ function HomePage() {
           
         });
   
-      } catch (error) { console.log(error) }
+      } catch (error) { 
+        // console.log(error) 
+      }
     }
   }, [essays])
   
@@ -85,7 +87,7 @@ function HomePage() {
         square.title.toLowerCase().includes(searchText.toLowerCase())
       ))
     } catch (error) {
-      console.log(error)
+      //console.log(error)
     }
   },[searchText,loading])
 
@@ -185,7 +187,7 @@ function HomePage() {
       </Box>
     </Box>
   ))}
-</Stack>)};
+</Stack>)}
 
 
 
