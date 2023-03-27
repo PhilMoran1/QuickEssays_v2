@@ -147,8 +147,13 @@ function HomePage() {
                  ) : (
     <Stack direction="row" flexWrap="wrap" mt={4} justifyContent="center">
   {filteredSquares.map(square => (
-    <Box key={square.id} w="25%" p={2}  onClick={() => { handleEssaySelect(square) }}>
-      <Box bg="gray.200" p={4} borderRadius="md" position="relative">
+    <Box
+     key={square.id}
+      w="25%"  p={2}
+        onClick={() => { handleEssaySelect(square) }}
+        maxW="400px"
+        >
+      <Box bg="gray.200" p={4} borderRadius="md" position="relative" >
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>
             <Text fontWeight="bold">{square.title}</Text>
