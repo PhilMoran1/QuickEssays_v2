@@ -200,7 +200,7 @@ const MultiStepForm = () => {
         nav("/home")
         return
     } else {
-        setIsModalOpen(false)
+        setIsModalOpen(true)
     }
     
     setIsWarningOpen(false);
