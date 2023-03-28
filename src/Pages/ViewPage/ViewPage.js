@@ -16,6 +16,7 @@ import {
   FormLabel,
   SimpleGrid,
   Input,
+  Image
 } from "@chakra-ui/react";
 
 import { RiHome2Line } from "react-icons/ri";
@@ -23,6 +24,7 @@ import { RiHome2Line } from "react-icons/ri";
 import Menu from "../Components/Menu/Menu";
 import { fetchEssays } from "../Components/fetch";
 import { updateEssay } from "../Components/fetch.mjs";
+import TopBar from "../Components/TopBar/TopBar";
 
 
 const ViewPage = () => {
@@ -84,24 +86,6 @@ const ViewPage = () => {
   
       const token = usrData.token;
 
-      // await fetch("http://localhost:3000/update-essay", {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`
-      //   },
-      //   body: JSON.stringify({
-      //     data: { essay_id: location.state.id }
-
-      //   })
-      // })
-      //   .then(response => response.text())
-      //   .then(data => {
-      //     console.log(JSON.parse(data))
-      //   })
-      //   .catch(error => {
-      //     console.log(error)
-      //   });
         updateEssay(usrData,location.state.id).then((result) => {
           console.log(result)
         }).catch((error) => console.log(error))
@@ -150,35 +134,7 @@ const ViewPage = () => {
   return (
     <>
     <Box p={4} position="fixed" top="0" left="0" width="100%" zIndex="1">
-  {/* Top bar */}
-  <Stack direction="row" alignItems="center" justifyContent="space-between">
-    {/* Left button */}
-    <IconButton
-      aria-label="Menu"
-      icon={<RiHome2Line />}
-      size="md"
-      variant="outline"
-      onClick={() => {
-        nav("/home");
-      }}
-      backgroundColor="white"
-    />
-
-    <Text
-      fontSize="2xl"
-      fontWeight="bold"
-      color="#4d4d4d"
-      position="absolute"
-      top="4"
-      left="20"
-      width="20%"
-    >
-      Quickessays
-    </Text>
-
-    {/* Right button */}
-    <Menu />
-  </Stack>
+    <TopBar menu={true}/>
 </Box>
 
             

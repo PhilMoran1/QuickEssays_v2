@@ -18,6 +18,7 @@ import { AiOutlineFile, AiFillFile } from 'react-icons/ai';
 
 import { fetchEssays } from "../Components/fetch.mjs";
 import Menu from "../Components/Menu/Menu";
+import TopBar from "../Components/TopBar/TopBar.js";
 
 
 function HomePage() {
@@ -93,7 +94,7 @@ function HomePage() {
 
 
   function handleSearch(event) {
-    setSearchText(event.target.value);
+    setSearchText(event);
   }
 
   const handleEssaySelect = (data) => {
@@ -107,39 +108,7 @@ function HomePage() {
   return (
     
     <Box p={4}>
-      {/* Top bar */}
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        {/* Left button */}
-        <IconButton
-          aria-label="Add item"
-          icon={<FaPlus />}
-          size="md"
-          variant="outline"
-          onClick={() => {nav("/create")}}
-        />
-        <Text
-          fontSize="2xl"
-          fontWeight="bold"
-          color="#4d4d4d"
-          position="absolute"
-          top="4"
-          left="20"
-          width="20%"
-        >
-          Quickessays
-        </Text>
-
-        {/* Search bar */}
-        <Input
-          placeholder="Search..."
-          value={searchText}
-          onChange={handleSearch}
-          size="md"
-          maxWidth="md"
-        />
-        {/* Right button */}
-        <Menu/>
-      </Stack>
+     <TopBar onSearch={(event) => handleSearch(event)} searchbar={true}/>
 
     {/* Array of squares */}
     {loading ? (
@@ -151,7 +120,7 @@ function HomePage() {
      key={square.id}
       w="25%"  p={2}
         onClick={() => { handleEssaySelect(square) }}
-        maxW="400px"
+        maxW="200px"
         >
       <Box bg="gray.200" p={4} borderRadius="md" position="relative" >
         <Box display="flex" justifyContent="space-between" alignItems="center">

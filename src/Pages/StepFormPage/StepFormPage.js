@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import TopBar from '../Components/TopBar/TopBar';
 import {
   Box,
   Button,
@@ -28,7 +28,9 @@ Stack,
 IconButton,
 Spacer,
 Spinner,
-Icon
+Icon,
+Flex,
+Image
 } from '@chakra-ui/react';
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import { RiHome2Line } from "react-icons/ri";
@@ -220,38 +222,7 @@ const MultiStepForm = () => {
   return (
     <>
     <Box p={4}>
-
-{/* Top bar */}
-<Stack direction="row" alignItems="center" justifyContent="space-between">
-    {/* Left button */}
-    
-    <IconButton
-      aria-label="Menu"
-      icon={<RiHome2Line />}
-      size="md"
-      variant="outline"
-      onClick={() => {nav("/home")}}
-    />
-
-    <Text
-      fontSize="2xl"
-      fontWeight="bold"
-      color="#4d4d4d"
-      position="absolute"
-      top="4"
-      left="20"
-      width="20%"
-    >
-      Quickessays
-    </Text>
-
-    
-
-    {/* Right button */}
-            <Menu></Menu>
-
-
-  </Stack>
+    <TopBar />
   </Box>
     <AlertDialog
         isOpen={isWarningOpen}
