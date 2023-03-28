@@ -22,6 +22,7 @@ import { RiHome2Line } from "react-icons/ri";
 
 import Menu from "../Components/Menu/Menu";
 import { fetchEssays } from "../Components/fetch";
+import { updateEssay } from "../Components/fetch.mjs";
 
 
 const ViewPage = () => {
@@ -48,7 +49,7 @@ const ViewPage = () => {
   
   const createPages = () => {
     console.log(content)
-    const maxPageLength = 4500;
+    const maxPageLength = 3000;
     const words = content.split(" ");
     let currentPage = 1;
     let currentPageContent = "";
@@ -83,24 +84,27 @@ const ViewPage = () => {
   
       const token = usrData.token;
 
-      await fetch("http://localhost:3000/update-essay", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          data: { essay_id: location.state.id }
+      // await fetch("http://localhost:3000/update-essay", {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${token}`
+      //   },
+      //   body: JSON.stringify({
+      //     data: { essay_id: location.state.id }
 
-        })
-      })
-        .then(response => response.text())
-        .then(data => {
-          console.log(JSON.parse(data))
-        })
-        .catch(error => {
-          console.log(error)
-        });
+      //   })
+      // })
+      //   .then(response => response.text())
+      //   .then(data => {
+      //     console.log(JSON.parse(data))
+      //   })
+      //   .catch(error => {
+      //     console.log(error)
+      //   });
+        updateEssay(usrData,location.state.id).then((result) => {
+          console.log(result)
+        }).catch((error) => console.log(error))
 
         if (usrData) {
           console.log()

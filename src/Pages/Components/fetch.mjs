@@ -140,3 +140,27 @@ export async function createPaymentIntent(usrData, plan, token) {
       return clientSecret;
     });
 }
+
+export async function updateEssay(usrData, essay_id) {
+      const token = usrData.token;
+
+      return await fetch(`${URL}/update-essay`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          data: { essay_id: essay_id }
+
+        })
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(JSON.parse(data))
+        })
+        .catch(error => {
+          console.log(error)
+        });
+
+}
