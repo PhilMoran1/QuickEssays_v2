@@ -27,6 +27,8 @@ import {
 
 import { createAccount, fetchLogin } from '../Components/fetch';
 import InfoBox from './Components/InfoBox';
+import TypeEffect from './Components/TypeEffect';
+
 function LandingPage() {
 
     const nav = useNavigate()
@@ -204,7 +206,10 @@ function LandingPage() {
         <Text fontSize="xl" mb={12} color="#666">
           Powerful Essays written by the most advanced AI in the world!
         </Text>
-        <Button onClick={handleSignupOpen} colorScheme="blue" size="lg" mb={8}>
+        <Box alignItems={"center"} margin={"20%"} display={"table-row-group"}>
+        <TypeEffect />
+        </Box>
+        <Button onClick={handleSignupOpen} colorScheme="blue" size="lg" mb={8} marginTop={"20%"}>
           Get Started
         </Button>
         <Flex justify="space-between" flexDirection={flexdir}>

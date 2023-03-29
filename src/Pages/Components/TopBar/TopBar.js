@@ -90,6 +90,10 @@ function TopBar(props) {
         </Flex>
         )}
 
+        {/* {!isMobile && (
+          //
+        )} */}
+
         {/* Search bar */}
         {props.searchbar == true && (
           <Input
