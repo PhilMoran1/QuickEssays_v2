@@ -1,4 +1,4 @@
-import react, {useState} from 'react'
+import react, {useState, useEffect} from 'react'
 import { isRouteErrorResponse, useNavigate } from 'react-router-dom';
 
 import {
@@ -26,6 +26,7 @@ import {
   } from '@chakra-ui/react';
 
 import { createAccount, fetchLogin } from '../Components/fetch';
+import InfoBox from './Components/InfoBox';
 function LandingPage() {
 
     const nav = useNavigate()
@@ -75,6 +76,17 @@ function LandingPage() {
           });
     
     };
+
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [flexdir,setFlexdir] = useState("")
+    useEffect(() => {
+      function handleResize() {
+        setIsMobile(window.innerWidth < 768);
+        setFlexdir("column")
+      }
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
   return (
     
@@ -191,58 +203,26 @@ function LandingPage() {
         <Button onClick={handleSignupOpen} colorScheme="blue" size="lg" mb={8}>
           Get Started
         </Button>
-        <Flex justify="space-between">
-          <Box
-            bg="#fff"
-            p={6}
-            boxShadow="md"
-            borderRadius="md"
-            width="30%"
-            textAlign="center"
-          >
-            
-            <Text fontSize="lg" mb={6}>
-              $2.99/mo
-            </Text>
-            <Text mb={6}>5 essays / 5 retries per essay</Text>
-            <Button colorScheme="blue" size="md">
-              Basic
-            </Button>
-          </Box>
-          <Box
-            bg="#fff"
-            p={6}
-            boxShadow="md"
-            borderRadius="md"
-            width="30%"
-            textAlign="center"
-          >
-            
-            <Text fontSize="lg" mb={6}>
-              $4.99/mo
-            </Text>
-            <Text mb={6}>10 essays / 15 retries per essay</Text>
-            <Button colorScheme="blue" size="md">
-              Standard
-            </Button>
-          </Box>
-          <Box
-            bg="#fff"
-            p={6}
-            boxShadow="md"
-            borderRadius="md"
-            width="30%"
-            textAlign="center"
-          >
-            
-            <Text fontSize="lg" mb={6}>
-              $9.99/mo
-            </Text>
-            <Text mb={6}>25 essays / 25 retries per essay</Text>
-            <Button colorScheme="blue" size="md">
-              Premium
-            </Button>
-          </Box>
+        <Flex justify="space-between" flexDirection={flexdir}>
+
+            <InfoBox 
+            price={"2.99$"}
+            info={"5 essays / 2 retries per essay"}ç
+            name={"Basic"}
+            context={flexdir}
+            />
+            <InfoBox 
+            price={"4.99$"}
+            info={"10 essays / 4 retries per essay"}ç
+            name={"Standard"}
+            context={flexdir}
+            />
+            <InfoBox 
+            price={"9.99$"}
+            info={"15 essays / 6 retries per essay"}ç
+            name={"Premium"}
+            context={flexdir}
+            />
         </Flex>
 
       </Box>
