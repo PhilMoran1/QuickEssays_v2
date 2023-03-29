@@ -83,7 +83,7 @@ function HomePage() {
     }
   }, [essays])
   
-  useEffect(() => {if (essays != {}) {setShowPriceModal(true)}},[essays])
+  // useEffect(() => {if (essays != {}) {setShowPriceModal(true)}},[essays])
   
   useEffect(() => {
     try {
