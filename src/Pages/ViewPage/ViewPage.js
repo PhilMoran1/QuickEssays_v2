@@ -38,6 +38,7 @@ const ViewPage = () => {
   
   const [formData, setFormData] = useState((JSON.parse(location.state.raw_prompt)).prompt);
   const [content, setContent] = useState(location.state.content);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   console.log(formData)
 
@@ -51,7 +52,9 @@ const ViewPage = () => {
   
   const createPages = () => {
     console.log(content)
-    const maxPageLength = 3000;
+    let maxPageLength;
+    if (isMobile) { maxPageLength = 1500}
+    else {maxPageLength = 3000;}
     const words = content.split(" ");
     let currentPage = 1;
     let currentPageContent = "";
@@ -131,12 +134,23 @@ const ViewPage = () => {
 
   console.log(p)
 
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+      console.log(isMobile)
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
     <Box p={4} position="fixed" top="0" left="0" width="100%" zIndex="1">
     <TopBar menu={true}/>
-</Box>
+    </Box>
 
+    {!isMobile ? (
             
       <Flex px="8" py="4" height="100vh" alignItems="flex-start" >
         
@@ -204,6 +218,7 @@ const ViewPage = () => {
       className="page"
       height={PAGE_HEIGHT}
       width={PAGE_WIDTH}
+      
       marginLeft="10%"
       marginRight="5%"
       overflow="hidden"
@@ -220,7 +235,28 @@ const ViewPage = () => {
 
 
     </Flex>
+    ): (
+      <>
+       <Box id="content-container" mt={20} >
+        {p.map((pageContent, index) => (
+          <Box
+            key={index}
+            className="page"
+            minHeight={PAGE_HEIGHT}
+            width="100%"
+            overflow="hidden"
+            mb="2"
+            backgroundColor="white"
+            boxShadow="lg"
+          >
+            <Box p="4" dangerouslySetInnerHTML={{ __html: pageContent }} />
+          </Box>
+        ))}
+      </Box>
+      </>
+    )}
     </>
+    
   );
 };
 
