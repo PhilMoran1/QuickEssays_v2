@@ -43,7 +43,7 @@ const styles = [
     "Persuasive", 
     "Expository", 
     "Argumentative", 
-    "Comparison/Contrast",
+    "Comparison/   Contrast",
     "Cause/Effect ",
     "Process", 
     "Reflective" 
@@ -218,7 +218,18 @@ const MultiStepForm = () => {
     setIsWarningOpen(true)
   };
 
-  
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const [nrows, setnrows] = useState(3)
+  useEffect(() => { if (isMobile) {setnrows(2)} else {setnrows(3)} }, [isMobile])
   return (
     <>
     <Box p={4}>
@@ -292,7 +303,9 @@ const MultiStepForm = () => {
             {currentStep === 1 && (
               <FormControl mb={4}>
                 <FormLabel>Style</FormLabel>
-                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
+                
+
                   {styles.map((style) => (
                     <Box
                       key={style}
@@ -324,7 +337,7 @@ const MultiStepForm = () => {
             {currentStep === 2 && (
               <FormControl mb={4}>
                 <FormLabel>Tone</FormLabel>
-                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {tones.map((tone) => (
                     <Box
                       key={tone}
@@ -355,7 +368,7 @@ const MultiStepForm = () => {
             {currentStep === 3 && (
               <FormControl mb={4}>
                 <FormLabel>Perspective</FormLabel>
-                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {perspectives.map((perspective) => (
                     <Box
                       key={perspective}
@@ -386,7 +399,7 @@ const MultiStepForm = () => {
             {currentStep === 4 && (
               <FormControl mb={4}>
                 <FormLabel>Audience</FormLabel>
-                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {audiences.map((audience) => (
                     <Box
                       key={audience}
@@ -417,7 +430,7 @@ const MultiStepForm = () => {
             {currentStep === 5 && (
               <FormControl mb={4}>
                 <FormLabel>Type</FormLabel>
-                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {types.map((type) => (
                     <Box
                       key={type}

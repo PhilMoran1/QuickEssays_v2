@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { RiHome2Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 import Menu from "../Menu/Menu";
+import './TopBar.css'
 import {
   Flex,
   Text,
@@ -21,11 +22,38 @@ function TopBar(props) {
     props.onSearch(event.target.value);
   };
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 1024);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
   return (
     <>
-      {/* Top bar */}
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
 
+      {/* Top bar */}
+      {isMobile && (
+          <Flex alignItems="center" >
+          <Image src="profilepic.jpg" alt="Logo" borderRadius="50%" boxSize="40px" ml="2" />
+          <Text
+            fontSize="150%"
+            fontWeight="bold"
+            color="#4d4d4d"
+            ml="2"
+          >
+            Quickessays
+          </Text>
+          <Stack />
+        </Flex>
+        
+        )}
+      <Stack direction="row" alignItems="center" justifyContent="space-between" margin="0.5%">
+        
         {props.menu == true ? (
           <IconButton
             aria-label="Menu"
@@ -45,10 +73,11 @@ function TopBar(props) {
             variant="outline"
             onClick={() => { nav("/create") }}
           />
-        )};
+        )}
 
         {/* Logo and Image */}
-        <Flex alignItems="center" justifyContent="start" left="20" position="absolute">
+        {!isMobile && (
+        <Flex className="logo-wrapper" alignItems="center" justifyContent="start" left="20" position="absolute">
           <Image src="profilepic.jpg" alt="Logo" borderRadius="50%" boxSize="40px" ml="2" />
           <Text
             fontSize="150%"
@@ -59,6 +88,7 @@ function TopBar(props) {
             Quickessays
           </Text>
         </Flex>
+        )}
 
         {/* Search bar */}
         {props.searchbar == true && (
@@ -74,6 +104,8 @@ function TopBar(props) {
         {/* Right button */}
         <Menu />
       </Stack>
+      {/* <Stack direction="row" h="1px" bg="gray.300" mt={2} /> */}
+
     </>
   );
 
