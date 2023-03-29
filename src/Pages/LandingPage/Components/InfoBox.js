@@ -29,10 +29,24 @@ function InfoBox(props) {
         </Text>
 
         <Text mb={6}>{props.info}</Text>
-
-        <Button colorScheme="blue" size="md">
+        {props.name === 'Basic' && (
+              <Box bg="gray.200" p={1} borderRadius="md">
+                <Text color="gray.500">{props.name}</Text>
+              </Box>
+            )}
+            {props.name === 'Standard' && (
+              <Box bg="gray.700" p={1} borderRadius="md">
+                <Text color="white">{props.name}</Text>
+              </Box>
+            )}
+            {props.name === 'Premium' && (
+              <Box bg="purple.500" p={1} borderRadius="md">
+                <Text color="white">{props.name}</Text>
+              </Box>
+            )}
+        {/* <Button colorScheme="blue" size="md">
             {props.name}
-        </Button>
+        </Button> */}
 
         </Box>
         </>
