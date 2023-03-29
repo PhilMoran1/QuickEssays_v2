@@ -135,8 +135,9 @@ function HomePage() {
         p={2}
         onClick={() => { handleEssaySelect(square) }}
         maxW="400px"
+        minW="400px"
       >
-        <Box bg="gray.200" p={4} borderRadius="md" position="relative">
+        <Box bg="gray.200" p={4} borderRadius="md" position="relative" >
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Box>
               <Text fontWeight="bold">{square.title}</Text>
