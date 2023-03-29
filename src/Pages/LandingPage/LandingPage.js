@@ -78,7 +78,7 @@ function LandingPage() {
     };
 
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    const [flexdir,setFlexdir] = useState("")
+    const [flexdir,setFlexdir] = useState("column")
     useEffect(() => {
       function handleResize() {
         setIsMobile(window.innerWidth < 768);
@@ -218,7 +218,7 @@ function LandingPage() {
             context={flexdir}
             />
             <InfoBox 
-            price={"9.99$"}
+            price={"8.99$"}
             info={"15 essays / 6 retries per essay"}ç
             name={"Premium"}
             context={flexdir}
