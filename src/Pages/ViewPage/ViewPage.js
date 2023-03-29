@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link, useLocation } from 'react-router-dom';
 import DOMPurify from 'dompurify';
@@ -39,6 +39,9 @@ const ViewPage = () => {
   const [formData, setFormData] = useState((JSON.parse(location.state.raw_prompt)).prompt);
   const [content, setContent] = useState(location.state.content);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [topbarcol, setTopbarcol] = useState("");
+  const [topbartop, setTopbartop] = useState("");
+
 
   console.log(formData)
 
@@ -134,6 +137,9 @@ const ViewPage = () => {
 
   console.log(p)
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -144,14 +150,25 @@ const ViewPage = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    if (isMobile) {
+      setTopbarcol("white")
+      setTopbartop("-4")
+    }
+     else {
+      setTopbarcol("")
+      setTopbartop("")
+    
+    }}, [isMobile])
+
   return (
     <>
-    <Box p={4} position="fixed" top="0" left="0" width="100%" zIndex="1" bg={"white"}>
-    <TopBar menu={true}/>
+    <Box  p={4} position="fixed" top={topbartop} left="0" width="100%" zIndex="1" >
+    <TopBar menu={true} bg={topbarcol}/>
     </Box>
 
     {!isMobile ? (
-            
+      
       <Flex px="8" py="4" height="100vh" alignItems="flex-start" >
         
         

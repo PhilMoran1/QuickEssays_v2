@@ -34,11 +34,11 @@ function TopBar(props) {
 
 
   return (
-    <>
+    <div style={{backgroundColor: props.bg, top: 0, padding: 0}}>
 
       {/* Top bar */}
       {isMobile && (
-          <Flex alignItems="center" >
+          <Flex alignItems="center" top={0}>
           <Image src="profilepic.jpg" alt="Logo" borderRadius="50%" boxSize="40px" ml="2" />
           <Text
             fontSize="150%"
@@ -106,7 +106,7 @@ function TopBar(props) {
       </Stack>
       {/* <Stack direction="row" h="1px" bg="gray.300" mt={2} /> */}
 
-    </>
+    </div>
   );
 
 }
