@@ -102,7 +102,7 @@ function TopBar(props) {
         }
         
         {/* Right button */}
-        <Menu />
+        <Menu showPriceModal={props.showPriceModal}/>
       </Stack>
       {/* <Stack direction="row" h="1px" bg="gray.300" mt={2} /> */}
 

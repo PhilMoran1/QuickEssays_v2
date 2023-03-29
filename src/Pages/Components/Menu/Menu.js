@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Stack,
@@ -33,7 +33,7 @@ import SettingsModal from "./Components/SettingsModal";
 
 
 
-function Menu() {
+function Menu(props) {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isPricingOpen, setIsPricingOpen] = useState(false);
     const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -46,6 +46,8 @@ function Menu() {
     const closeHelpModal = () => setIsHelpOpen(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    useEffect(() => {if (props.showPriceModal) {setIsPricingOpen(true)}}, [props.showPriceModal]);
+    console.log(props.showPriceModal)
     return (
       <>
     <SettingsModal isOpen={isSettingsOpen} onClose={closeSettingsModal} />

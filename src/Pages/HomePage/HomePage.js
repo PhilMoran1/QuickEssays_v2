@@ -28,6 +28,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [filteredSquares, setFilteredSquares] = useState([{}]);
   const [searchText, setSearchText] = useState('');
+  const [showPriceModal, setShowPriceModal] = useState(false)
   const nav = useNavigate();
   
   useEffect(() => { // retrieve user data from localstorage
@@ -78,10 +79,12 @@ function HomePage() {
       } catch (error) { 
         // console.log(error) 
       }
+    } else {
     }
   }, [essays])
   
-
+  useEffect(() => {if (essays != {}) {setShowPriceModal(true)}},[essays])
+  
   useEffect(() => {
     try {
       setFilteredSquares(essays.data.filter(square =>
@@ -109,7 +112,12 @@ function HomePage() {
     <>
         <Box p={4} >
 
-    <TopBar onSearch={(event) => handleSearch(event)} searchbar={true}/>
+    <TopBar
+    onSearch={(event) => handleSearch(event)}
+    searchbar={true}
+    showPriceModal={showPriceModal}
+      
+    />
     </Box>
     {loading ? (
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
