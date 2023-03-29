@@ -78,15 +78,17 @@ function LandingPage() {
     };
 
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    const [flexdir,setFlexdir] = useState("column")
+    const [flexdir,setFlexdir] = useState("")
     useEffect(() => {
       function handleResize() {
         setIsMobile(window.innerWidth < 768);
-        setFlexdir("column")
+        
       }
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    useEffect(() => {if (isMobile) {setFlexdir("column")} else { setFlexdir("") }}, [isMobile])
 
   return (
     
@@ -184,16 +186,18 @@ function LandingPage() {
         position="relative"
         zIndex="1"
       >
-        <Text
-          fontSize="2xl"
-          fontWeight="bold"
-          color="#4d4d4d"
-          position="absolute"
-          top="4"
-          left="4"
-        >
-          Quickessays
-        </Text>
+      <Flex top={2} left={-5} position="absolute">
+          <Image src="profilepic.jpg" alt="Logo" borderRadius="50%" boxSize="40px" />
+          <Text
+            fontSize="150%"
+            fontWeight="bold"
+            color="#4d4d4d"
+            ml="2"
+          >
+            Quickessays
+          </Text>
+          <Stack />
+        </Flex>
         <Heading as="h1" size="2xl" mb={6} color="#4d4d4d" mt="20">
           Welcome to Quickessays!
         </Heading>

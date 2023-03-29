@@ -146,7 +146,7 @@ const ViewPage = () => {
 
   return (
     <>
-    <Box p={4} position="fixed" top="0" left="0" width="100%" zIndex="1">
+    <Box p={4} position="fixed" top="0" left="0" width="100%" zIndex="1" bg={"white"}>
     <TopBar menu={true}/>
     </Box>
 
