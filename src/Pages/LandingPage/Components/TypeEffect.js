@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Text } from '@chakra-ui/react';
 
-function TypeEffect() {
+function TypeEffect(props) {
   const [text, setText] = useState("");
-  const [phrases, setPhrases] = useState([
+  const about = [
     "benefits and drawbacks of social media",
     "effects of climate change on the planet",
     "impact of technology on our daily lives",
@@ -29,7 +29,39 @@ function TypeEffect() {
     "impact of political polarization on society",
     "benefits and drawbacks of online learning",
     "role of the arts in society and personal development"
-  ]);
+  ];
+  const styles = [
+    "Narrative", 
+    "Descriptive",
+    "Persuasive", 
+    "Expository", 
+    "Argumentative", 
+    "Comparison/   Contrast",
+    "Cause/Effect ",
+    "Process", 
+    "Reflective" 
+];
+
+const audiences = [
+  "General",
+  "Academic",
+  "Professional",
+  "Expert" ,
+  "Niche",
+  "Educators and academics in the field",
+  "Peers and colleagues in the field",
+  "Policymakers and government officials",
+  "Industry professionals and practitioners."
+];
+  const [phrases, setPhrases] = useState([])
+  const [firstpart,setFirstPart] = useState("")
+  useEffect(()=>{
+    if (props.type == "about") {setPhrases(about); setFirstPart("Write an essay about ")}
+    else if (props.type == "styles") {setPhrases(styles); setFirstPart("I want it to be ")}
+    else {setPhrases(audiences); setFirstPart("For")}
+  },[])
+  
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [index, setIndex] = useState(0);
   const [delay, setDelay] = useState(120);
@@ -64,7 +96,7 @@ function TypeEffect() {
 
   return (
     <Text fontSize="xl" position="absolute">
-      Write an essay about the{" "}
+      {firstpart}{" "}
       <Text as="span" color="gray.500">
         {text}
       </Text>

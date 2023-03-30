@@ -1,5 +1,5 @@
 
-const URL = "https://3d14-37-133-87-18.eu.ngrok.io" ;
+const URL = "https://1da8-37-133-87-18.eu.ngrok.io" ;
 // const URL = "http://localhost:3000"
 
 export async function fetchEssays(usrData) {

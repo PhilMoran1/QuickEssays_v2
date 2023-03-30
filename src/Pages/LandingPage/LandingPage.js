@@ -208,20 +208,33 @@ function LandingPage() {
           Powerful Essays written by the most advanced AI in the world!
         </Text>
         {!isMobile ? (
-        <Box alignItems={"center"}  display={"table-row-group"}   w="30%"
-        css={{
-          position: "absolute",
-        }}>
-        <TypeEffect />
+        <>
+        <Flex justifyContent="center" alignItems="center">
+        <Box w="30%" css={{ position: "absolute" }}>
+          <TypeEffect type="about"/>
         </Box>
-        ) : (
-          <Box alignItems={"center"} display={"table-row-group"}>
-        <TypeEffect />
+        {/* <Box w="30%" css={{ position: "absolute", left: "33.33%" }}>
+          <TypeEffect type="styles" />
         </Box>
-        )}
-        <Button onClick={handleSignupOpen} bg="gray.700" size="lg" mb={8} marginTop={"35%"}       _hover={{ bg: "gray.800" }}>
+        <Box w="30%" css={{ position: "absolute", left: "66.66%" }}>
+          <TypeEffect type="audience"/>
+        </Box> */}
+      </Flex>
+
+        <Button onClick={handleSignupOpen} bg="gray.700" size="lg" mb={8} marginTop={"15%"}       _hover={{ bg: "gray.800" }}>
           <Text color="white">Get Started</Text>
         </Button>
+        </>
+        ) : (
+          <>
+          <Box alignItems={"center"} display={"table-row-group"}>
+            <TypeEffect />
+          </Box>
+          <Button onClick={handleSignupOpen} bg="gray.700" size="lg" mb={8} marginTop={"35%"}       _hover={{ bg: "gray.800" }}>
+            <Text color="white">Get Started</Text>
+          </Button>
+          </>
+        )}
         <Flex justify="space-between" flexDirection={flexdir}>
 
             <InfoBox 
