@@ -228,7 +228,7 @@ function LandingPage() {
         ) : (
           <>
           <Box alignItems={"center"} display={"table-row-group"}>
-            <TypeEffect />
+            <TypeEffect type="about"/>
           </Box>
           <Button onClick={handleSignupOpen} bg="gray.700" size="lg" mb={8} marginTop={"35%"}       _hover={{ bg: "gray.800" }}>
             <Text color="white">Get Started</Text>

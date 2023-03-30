@@ -25,7 +25,7 @@ import Menu from "../Components/Menu/Menu";
 import { fetchEssays } from "../Components/fetch";
 import { updateEssay } from "../Components/fetch.mjs";
 import TopBar from "../Components/TopBar/TopBar";
-
+import SummaryDrawer from "./Components/Summary";
 
 const ViewPage = () => {
 
@@ -41,7 +41,7 @@ const ViewPage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [topbarcol, setTopbarcol] = useState("");
   const [topbartop, setTopbartop] = useState("");
-
+  const [loading, setLoading] = useState(false);
 
   console.log(formData)
 
@@ -54,7 +54,11 @@ const ViewPage = () => {
   const [usrData, setUsrData] = useState('');
   
   const createPages = () => {
+    try {
     console.log(content)
+    if (content == undefined) {
+      return [];
+    }
     let maxPageLength;
     if (isMobile) { maxPageLength = 1500}
     else {maxPageLength = 3000;}
@@ -79,6 +83,7 @@ const ViewPage = () => {
     console.log(content)
     console.log(pages)
     return pages; //setP(pages)
+  } catch (error) {console.log(error); return [];}
   }
 
   const handleRetry = async () => {
@@ -87,34 +92,44 @@ const ViewPage = () => {
         console.log("usrData not defined");
         return;
       }
+      setLoading(true)
 
       console.log("USRDATA - ", usrData)
   
       const token = usrData.token;
 
         updateEssay(usrData,location.state.id).then((result) => {
-          console.log(result)
+          console.log("RESULRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",result)
+          setLoading(false)
+          console.log(usrData)
+          if (usrData) {
+            console.log()
+            fetchEssays(usrData).then((result) => {
+              console.log(result)
+              if (result.status == "error") {
+                nav('/') // with message saying session expired
+              }
+          
+              console.log("RESULT - ", result.data)
+              const indexed = result.data.reduce((acc, obj) => {
+                acc[obj.id] = obj;
+                return acc;
+              }, {});
+              console.log("HEEERE - ",indexed[location.state.id])
+              setContent(indexed[location.state.id].content)
+              setLoading(false)
+  
+            }).then(() => {
+              console.log(content)
+              createPages(content)
+            }
+              ).catch((error) => {console.log(error)})
+  
+          }
+
         }).catch((error) => console.log(error))
 
-        if (usrData) {
-          console.log()
-          fetchEssays(usrData).then((result) => {
-            console.log(result)
-            if (result.status == "error") {
-              nav('/') // with message saying session expired
-            }
         
-            console.log(result.data)
-
-            setContent(result.data[0].content)
-
-          }).then(() => {
-            console.log(content)
-            createPages(content)
-          }
-            ).catch((error) => {console.log(error)})
-
-        }
 
         
     }
@@ -270,6 +285,7 @@ const ViewPage = () => {
           </Box>
         ))}
       </Box>
+      <SummaryDrawer formData={formData} onRetry={handleRetry} loading={loading}/>
       </>
     )}
     </>

@@ -29,7 +29,7 @@ import { Link } from 'react-router-dom';
 import HelpModal from "./Components/HelpModal";
 import PricingModal from "./Components/PricingModal";
 import SettingsModal from "./Components/SettingsModal";
-
+import Inventory from "./Components/Inventory";
 
 
 
@@ -55,7 +55,7 @@ function Menu(props) {
     <HelpModal isOpen={isHelpOpen} onClose={closeHelpModal} />
 
       {/* Drawer */}
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} paddingRight={"10%"}>
       <DrawerOverlay />
       <DrawerContent bg="white" color="gray.700">
         <DrawerCloseButton />
@@ -72,6 +72,10 @@ function Menu(props) {
           <Button variant="ghost" leftIcon={<FaQuestionCircle />} onClick={() => setIsHelpOpen(true)}>
             Help
           </Button>
+          <Text fontSize="xl" fontWeight="bold" mt={4} mb={8}>
+            Inventory
+          </Text>
+          <Inventory basic={5} standard={10} premium={15}/>
           <Box pt={8} display="flex" justifyContent="center" alignItems="flex-end" bottom={0}>
             <Link to="/privacy">Privacy Policy ·  </Link>
             <Link to="/terms"> Terms of Service</Link>
