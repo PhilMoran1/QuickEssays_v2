@@ -50,7 +50,7 @@ function Menu(props) {
     console.log(props.showPriceModal)
     return (
       <>
-    <SettingsModal isOpen={isSettingsOpen} onClose={closeSettingsModal} />
+    <SettingsModal isOpen={isSettingsOpen} onClose={closeSettingsModal}/>
     <PricingModal isOpen={isPricingOpen} onClose={closePricingModal} />
     <HelpModal isOpen={isHelpOpen} onClose={closeHelpModal} />
 

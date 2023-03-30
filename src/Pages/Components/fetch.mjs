@@ -1,3 +1,4 @@
+import { resolveMotionValue } from "framer-motion";
 
 const URL = "https://1da8-37-133-87-18.eu.ngrok.io" ;
 // const URL = "http://localhost:3000"
@@ -163,4 +164,32 @@ export async function updateEssay(usrData, essay_id) {
           console.log(error)
         });
 
+}
+
+
+export async function changePassword(usrData,oldPassword,newPassword) {
+  console.log(usrData)
+  const token = usrData.token;
+
+  return await fetch(`${URL}/change-password`, {
+    method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          data: { email: usrData.data.email, oldPassword: oldPassword, newPassword: newPassword}
+
+        })
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(JSON.parse(data))
+          return JSON.parse(data)
+        })
+        .catch(error => {
+          console.log(error)
+          return error
+
+        });
 }

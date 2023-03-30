@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
+  Alert,
+  AlertIcon,
   Modal,
+
   ModalOverlay,
   ModalContent,
   ModalHeader,
@@ -13,18 +16,29 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-
+import { changePassword } from "../../fetch.mjs";
 function SettingsModal({ isOpen, onClose }) {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [usrData, setUsrData] = useState('');
+  const [response, setResponse] = useState('')
+  const [alert, setAlert] = useState(false)
 
   const nav = useNavigate()
   const handleLogout = () => {
     localStorage.clear();
     nav("/");
   };
+
+  useEffect(() => { // retrieve user data from localstorage
+    const data = JSON.parse(localStorage.getItem("data"));
+    console.log(data)
+    if (data) {
+      setUsrData(data);
+    }
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,13 +48,22 @@ function SettingsModal({ isOpen, onClose }) {
       return;
     }
     // Call API to change password
+
+    changePassword(usrData,oldPassword, newPassword)
+    .then((result) => { 
+      console.log(result)
+      setResponse(result);
+      setAlert(true);
+    }).catch((error) => {console.log(error)});
+    
     // Reset form and close modal
     setOldPassword("");
     setNewPassword("");
     setConfirmPassword("");
     setPasswordError("");
-    onClose();
+    
   };
+  useEffect(() =>{setResponse(""); setAlert("");},[onClose])
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -86,6 +109,12 @@ function SettingsModal({ isOpen, onClose }) {
             </Button>
           </ModalFooter>
         </form>
+        {alert && (
+            <Alert status={response.status} mt={4}>
+              <AlertIcon />
+              {response.message}
+            </Alert>
+          )}
       </ModalContent>
     </Modal>
   );
