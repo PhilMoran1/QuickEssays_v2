@@ -177,8 +177,9 @@ function LandingPage() {
       </Modal>
 
         <Box position="absolute" top="0" right="0" p={4}>
-        <Button onClick={handleLoginOpen} colorScheme="blue" size="md">
-          Log in
+        <Button onClick={handleLoginOpen} bg="gray.700"size="md"       _hover={{ bg: "gray.800" }}>
+          <Text color="white">Log In</Text>
+
         </Button>
       </Box>
       <Box
@@ -206,17 +207,26 @@ function LandingPage() {
         <Text fontSize="xl" mb={12} color="#666">
           Powerful Essays written by the most advanced AI in the world!
         </Text>
-        <Box alignItems={"center"} margin={"20%"} display={"table-row-group"}>
+        {!isMobile ? (
+        <Box alignItems={"center"}  display={"table-row-group"}   w="30%"
+        css={{
+          position: "absolute",
+        }}>
         <TypeEffect />
         </Box>
-        <Button onClick={handleSignupOpen} colorScheme="blue" size="lg" mb={8} marginTop={"20%"}>
-          Get Started
+        ) : (
+          <Box alignItems={"center"} display={"table-row-group"}>
+        <TypeEffect />
+        </Box>
+        )}
+        <Button onClick={handleSignupOpen} bg="gray.700" size="lg" mb={8} marginTop={"35%"}       _hover={{ bg: "gray.800" }}>
+          <Text color="white">Get Started</Text>
         </Button>
         <Flex justify="space-between" flexDirection={flexdir}>
 
             <InfoBox 
             price={"2.99$"}
-            info={"5 essays / 2 retries per essay"}ç
+            info={"5 essays / 2 retries per essay"}
             name={"Basic"}
             context={flexdir}
             />

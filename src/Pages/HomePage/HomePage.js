@@ -153,7 +153,7 @@ function HomePage() {
               </Box>
             )}
             {square.type === 'premium' && (
-              <Box bg="purple.500" p={1} borderRadius="md" mt={2} position="absolute" right={2} top={1}>
+              <Box bg="orange.400" p={1} borderRadius="md" mt={2} position="absolute" right={2} top={1}>
                 <Text fontSize="sm" color="white">{square.type}</Text>
               </Box>
             )}

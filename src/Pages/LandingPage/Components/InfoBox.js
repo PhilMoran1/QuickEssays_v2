@@ -40,13 +40,14 @@ function InfoBox(props) {
               </Box>
             )}
             {props.name === 'Premium' && (
-              <Box bg="purple.500" p={1} borderRadius="md">
+              <Box bg="orange.400" p={1} borderRadius="md">
                 <Text color="white">{props.name}</Text>
               </Box>
             )}
         {/* <Button colorScheme="blue" size="md">
             {props.name}
         </Button> */}
+        
 
         </Box>
         </>
