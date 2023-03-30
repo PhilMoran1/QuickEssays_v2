@@ -56,7 +56,7 @@ const audiences = [
   const [phrases, setPhrases] = useState([])
   const [firstpart,setFirstPart] = useState("")
   useEffect(()=>{
-    if (props.type == "about") {setPhrases(about); setFirstPart("Write an essay about ")}
+    if (props.type == "about") {setPhrases(about); setFirstPart("Write an essay about the ")}
     else if (props.type == "styles") {setPhrases(styles); setFirstPart("I want it to be ")}
     else {setPhrases(audiences); setFirstPart("For")}
   },[])

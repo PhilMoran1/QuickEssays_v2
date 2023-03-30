@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 import {
   Box,
   Button,
@@ -12,12 +12,23 @@ import {
   FormControl,
   FormLabel,
   SimpleGrid,
-  Spinner
+  Spinner,
+  AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter,
+
 } from '@chakra-ui/react';
+import { fetchEssays } from '../../Components/fetch.mjs';
 
 function SummaryDrawer(props) {
+  // console.log(props.essay.retries)
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(props.loading);
+
+  const cancelRef = useRef();
+
+  const [showMessage, setShowMessage] = useState(false);
+  
+  const onClose = () => setShowMessage(false);
+
   useEffect(()=>{setIsDrawerOpen(props.loading)},[props.loading])
   const toggleDrawer = () => {
     if (!props.loading) {setIsDrawerOpen(!isDrawerOpen)}
@@ -27,6 +38,25 @@ function SummaryDrawer(props) {
 
   return (
     <>
+    <AlertDialog
+        isOpen={showMessage}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader>Out of retries</AlertDialogHeader>
+            <AlertDialogBody>
+              <Text>You dont have any retries left for this essay!</Text>
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>Ok</Button>
+              {/* <Button colorScheme="red" ml={3} onClick={handleContinue}>Continue</Button> */}
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
       <Box id="content-container" mt={20}>
         {/* Your page content here */}
       </Box>
@@ -101,8 +131,11 @@ function SummaryDrawer(props) {
             </SimpleGrid>
             <FormLabel>About</FormLabel>
             <Text marginBottom={"20%"}>{formData.about}</Text>
-
-        <Button mt={9} colorScheme="blue" width="100%" left="0" bottom="4" position="absolute" onClick={props.onRetry}>Retry</Button>
+        {props.essay.retries > 0 ? (
+          <Button mt={9} colorScheme="blue" width="100%" left="0" bottom="4" position="absolute" onClick={props.onRetry}>Retry</Button>
+        ) : (
+          <Button mt={9} colorScheme="gray" width="100%" left="0" bottom="4" position="absolute" onClick={() => {setShowMessage(true)}}>Retry</Button>
+        )}
         </Box>
           
         </Box>

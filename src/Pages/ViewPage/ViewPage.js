@@ -37,6 +37,7 @@ const ViewPage = () => {
 
   
   const [formData, setFormData] = useState((JSON.parse(location.state.raw_prompt)).prompt);
+  const [essay, setEssay] = useState(location.state);
   const [content, setContent] = useState(location.state.content);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [topbarcol, setTopbarcol] = useState("");
@@ -116,6 +117,7 @@ const ViewPage = () => {
                 return acc;
               }, {});
               console.log("HEEERE - ",indexed[location.state.id])
+              setEssay(indexed[location.state.id]);
               setContent(indexed[location.state.id].content)
               setLoading(false)
   
@@ -178,6 +180,7 @@ const ViewPage = () => {
 
   return (
     <>
+    
     <Box  p={4} position="fixed" top={topbartop} left="0" width="100%" zIndex="1" >
     <TopBar menu={true} bg={topbarcol}/>
     </Box>
@@ -285,7 +288,7 @@ const ViewPage = () => {
           </Box>
         ))}
       </Box>
-      <SummaryDrawer formData={formData} onRetry={handleRetry} loading={loading}/>
+      <SummaryDrawer formData={formData} onRetry={handleRetry} loading={loading} essay={essay}/>
       </>
     )}
     </>
