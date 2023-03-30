@@ -261,9 +261,11 @@ const MultiStepForm = () => {
       <ModalHeader display="flex" alignItems="center">
         <Box flex="1">{steps[currentStep].title}</Box>
         <Spacer />
+        {currentStep !== steps.length - 1 && (
         <Button variant="ghost" onClick={() => {setAlert({title: "Are you sure you want to cancel?", message: "All progress will be lost!"}); setIsWarningOpen(true)}}>
             Cancel
         </Button>
+        )}
         </ModalHeader>
 
         <ModalBody>
@@ -457,7 +459,7 @@ const MultiStepForm = () => {
           Summary
         </Heading>
        
-        <SimpleGrid columns={3} spacing={10}>
+        <SimpleGrid columns={nrows} spacing={10}>
         <FormControl>
             <FormLabel>Title</FormLabel>
             <Text>{formData.title}</Text>
@@ -537,7 +539,7 @@ const MultiStepForm = () => {
     </Button>
   )}
 
-  {currentStep === steps.length - 2 ? (
+  {currentStep === steps.length - 2 && currentStep !== steps.length - 1 ? (
     null            
   ) : (
     <>

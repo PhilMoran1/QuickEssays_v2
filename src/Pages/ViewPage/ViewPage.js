@@ -201,6 +201,8 @@ const ViewPage = () => {
           
           top="60px"
           backgroundColor="white"
+          
+          
         >
           <Heading size="md" mb="4">
             Summary

@@ -70,11 +70,12 @@ function SummaryDrawer(props) {
         bg="white"
         boxShadow="md"
         textAlign="center"
+        
       >
-        <Button onClick={toggleDrawer}>Summary</Button>
+        <Button onClick={toggleDrawer} >Summary</Button>
       </Box>
 
-      <Drawer isOpen={isDrawerOpen} placement="bottom" onClose={toggleDrawer}>
+      <Drawer isOpen={isDrawerOpen} placement="bottom" onClose={toggleDrawer} >
         <DrawerOverlay />
         <DrawerContent>
 
@@ -83,7 +84,7 @@ function SummaryDrawer(props) {
 
             {!props.loading ? (
                 <>
-        <DrawerCloseButton />
+        <DrawerCloseButton paddingTop="10%"/>
 
         <Box
           p="4"
@@ -95,6 +96,7 @@ function SummaryDrawer(props) {
           
           top="60px"
           backgroundColor="white"
+          paddingTop="10%"
         >
           <Heading size="md" mb="4">
             Summary
@@ -103,7 +105,7 @@ function SummaryDrawer(props) {
             
             <Box mt={8}   textAlign="center" alignItems="center" justifyContent="center" >
             {/* <Heading mb={4}>Summary</Heading> */}
-            <SimpleGrid columns={3} spacing={10}>
+            <SimpleGrid columns={2} spacing={10}>
             <FormControl>
                 <FormLabel>Title</FormLabel>
                 <Text>{formData.title}</Text>
