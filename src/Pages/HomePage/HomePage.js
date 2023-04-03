@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import * as htmlToImage from 'html-to-image';
+import pako from 'pako';
+
 import './HomePage.css'
 import {
   Stack,
@@ -9,6 +11,7 @@ import {
   Text,
   Input,
   Box,
+  Button,
   useDisclosure,
   Icon,
 } from "@chakra-ui/react";
@@ -19,9 +22,11 @@ import { AiOutlineFile, AiFillFile } from 'react-icons/ai';
 import { fetchEssays } from "../Components/fetch.mjs";
 import Menu from "../Components/Menu/Menu";
 import TopBar from "../Components/TopBar/TopBar.js";
-
+import PricingModal from "../Components/Menu/Components/PricingModal";
+import { decompressString } from "../Components/decompress.mjs";
 
 function HomePage() {
+  
 
   const [usrData, setUsrData] = useState('');
   const [essays, setEssays] = useState({});
@@ -29,6 +34,8 @@ function HomePage() {
   const [filteredSquares, setFilteredSquares] = useState([{}]);
   const [searchText, setSearchText] = useState('');
   const [showPriceModal, setShowPriceModal] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
+
   const nav = useNavigate();
   
   useEffect(() => { // retrieve user data from localstorage
@@ -46,17 +53,40 @@ function HomePage() {
         if (result.status == "error") {
           nav('/') // with message saying session expired
         }
+        // let update = usrData;
+        // update.data = result;
+        // setUsrData(update)
+        console.log("HEHREHREHR - ", result)
+        console.log("USRDATA - ", usrData);
+        let update = usrData;
+        update.data = result.usr;
+        console.log("newUSRDATA . ", update)
+        
+        console.log()
+        localStorage.setItem("data", JSON.stringify(update));
         setEssays(result)
       }).catch((error) => {console.log(error)})
     }
   }, [usrData])
+
+  // useEffect(() => {
+  //   let update = usrData;
+  //   console.log(essays)
+  //   update.data = essays.usr;
+  //   console.log(update)
+
+  //   setUsrData(update)
+  //   // setUsrData(essays)
+  // },[essays])
   
   useEffect(() => {
+    
+    
     if (essays) { // check if essays has been set
       try { // generate images and store them in object
         const promises = essays.data.map((essay) => {
           const div = document.createElement('div');
-          div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + essay.content+ "</body></html>";
+          div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + decompressString(essay.content) + "</body></html>";
           return htmlToImage.toPng(div, { width: 800, height: 600 })
             .then(dataUrl => {
               essay.image = dataUrl;
@@ -83,7 +113,15 @@ function HomePage() {
     }
   }, [essays])
   
-  // useEffect(() => {if (essays != {}) {setShowPriceModal(true)}},[essays])
+  useEffect(() => {
+    if (essays != {}) {
+      setShowMessage(true)
+    } else {
+      setLoading(false)
+    }
+  console.log("eEASDASDSA",essays)
+  
+ },[essays])
   
   useEffect(() => {
     try {
@@ -106,19 +144,45 @@ function HomePage() {
     nav("/view", { state: data })
   }
 
+  const handleCreate = () => {
+    const a = usrData.data;
+    console.log(a)
+    console.log("standard - ",a.standard)
+    console.log(a.basic)
+    console.log(a.premium)
+    if (a.standard == 0 && a.basic == 0 && a.premium == 0) {
+      setShowPriceModal(true)
+    } else {
+      nav("/create")
+    }
+  }
+
+  const closePricingModal = () => setShowPriceModal(false);
 
 
   return (
     <>
+    <PricingModal isOpen={showPriceModal} onClose={closePricingModal}></PricingModal>
         <Box p={4} >
 
     <TopBar
     onSearch={(event) => handleSearch(event)}
     searchbar={true}
-    showPriceModal={showPriceModal}
       
     />
     </Box>
+    {showMessage != false && (
+      <div style={{ position: "fixed", top: 90, right: 0, bottom: 0, left: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+      <Text>Don't Have any essays?</Text>
+      <br />
+      <br />
+
+      <br />
+
+      <Button onClick={() => {handleCreate()}}>Create</Button>
+      </div>
+    )}
     {loading ? (
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
 

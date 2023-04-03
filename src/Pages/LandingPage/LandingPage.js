@@ -25,12 +25,12 @@ import {
     AlertIcon
   } from '@chakra-ui/react';
 
-import { createAccount, fetchLogin } from '../Components/fetch';
+import { createAccount, fetchLogin } from '../Components/fetch.mjs';
 import InfoBox from './Components/InfoBox';
 import TypeEffect from './Components/TypeEffect';
 
 function LandingPage() {
-
+    
     const nav = useNavigate()
 
     const [showLoginModal, setShowLoginModal] = useState(false);
@@ -78,7 +78,7 @@ function LandingPage() {
           });
     
     };
-
+    
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [flexdir,setFlexdir] = useState("")
     useEffect(() => {

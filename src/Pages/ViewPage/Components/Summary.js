@@ -35,6 +35,7 @@ function SummaryDrawer(props) {
     
   };
   const [formData, setFormData] = useState(props.formData)
+  useEffect(() => {console.log(formData)},[formData])
 
   return (
     <>
@@ -84,7 +85,6 @@ function SummaryDrawer(props) {
 
             {!props.loading ? (
                 <>
-        <DrawerCloseButton paddingTop="10%"/>
 
         <Box
           p="4"
@@ -96,8 +96,11 @@ function SummaryDrawer(props) {
           
           top="60px"
           backgroundColor="white"
-          paddingTop="10%"
+          marginTop="10%"
+
         >
+        <DrawerCloseButton marginTop="20%"/>
+
           <Heading size="md" mb="4">
             Summary
           </Heading>

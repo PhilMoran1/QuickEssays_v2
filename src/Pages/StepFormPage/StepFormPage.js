@@ -82,11 +82,7 @@ const tones = [
     "Industry professionals and practitioners."
   ];
 
-  const types = [
-    "Basic", 
-    "Standard",
-    "Premium"
-  ]
+  
 const steps = [
   { title: 'Step 1', content: 'set title and about' },
   { title: 'Step 2', content: 'set style' },
@@ -107,18 +103,47 @@ const MultiStepForm = () => {
   const [formData, setFormData] = useState({});
   const [alert, setAlert] = useState({title: "Are you sure?", message: "You cannot change these option after this step!"})
   const [loading, setLoading] = useState(true)
-  const [selectedStyle, setSelectedStyle] = useState(null);
+  const [selectedStyle, setSelectedStyle] = useState("Narrative");
   const [customStyle, setCustomStyle] = useState("");
 
-  const [selectedTone, setSelectedTone] = useState(null);
+  const [selectedTone, setSelectedTone] = useState("Formal");
   const [customTone, setCustomTone] = useState("");
 
-  const [selectedPerspective, setSelectedPerspective] = useState(null);
+  const [selectedPerspective, setSelectedPerspective] = useState("High school");
   const [customPerspective, setCustomPerspective] = useState("");
 
-  const [selectedAudience, setSelectedAudience] = useState(null);
+  const [selectedAudience, setSelectedAudience] = useState("General");
   const [customAudience, setCustomAudience] = useState("");
+  const [types, setTypes] = useState([
+    "Basic", 
+    "Standard",
+    "Premium"
+  ]);
 
+  const [usrData, setUsrData] = useState('');
+
+  useEffect(() => { // retrieve user data from localstorage
+    const data = (JSON.parse(localStorage.getItem("data"))).data;
+    console.log(data)
+    if (data) {
+      setUsrData(data);
+    }
+  }, []);
+    
+  useEffect(() => {
+    let template = [];
+    if (usrData.basic > 0) {
+      template.push("Basic")
+    } 
+    if (usrData.standard > 0 ) {
+      template.push("Standard")
+    }
+
+    if (usrData.premium > 0 ) {
+      template.push("Premium")
+    } 
+    setTypes(template)
+  },[usrData])
   // Style
   const handleStyleSelection = (style) => {
     setFormData((prevFormData) => ({ ...prevFormData, style }));
@@ -178,6 +203,8 @@ const MultiStepForm = () => {
   const handleNextStep = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
+    
+  useEffect(() => {console.log("current - ",currentStep)},[currentStep])
 
   const handlePreviousStep = () => {
     setCurrentStep((prevStep) => prevStep - 1);
@@ -187,12 +214,6 @@ const MultiStepForm = () => {
 
   const onClose = () => setIsWarningOpen(false);
   const cancelRef = React.useRef();
-  const [usrData, setUsrData] = useState('')
-
-  useEffect(() => {
-    setUsrData(JSON.parse(localStorage.getItem("data")))
-  }, []) 
-
 
   const handleContinue = async () => {
     // Handle continue action
@@ -528,7 +549,7 @@ const MultiStepForm = () => {
           </form>
         </ModalBody>
         <ModalFooter style={{ display: 'flex', justifyContent: 'space-between' }}>
-  {currentStep !== 0 && (
+  {currentStep !== 0 && currentStep !== 7 && (
     <Button
       type="button"
       variant="ghost"
@@ -539,9 +560,11 @@ const MultiStepForm = () => {
     </Button>
   )}
 
-  {currentStep === steps.length - 2 && currentStep !== steps.length - 1 ? (
+  {currentStep === steps.length - 2 || currentStep === 7 ? (
+    
     null            
   ) : (
+    
     <>
       {/* <Button colorScheme="gray" onClick={() => {nav("/home")} } ml={0}>
         Home

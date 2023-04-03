@@ -2,6 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link, useLocation } from 'react-router-dom';
 import DOMPurify from 'dompurify';
+import pako from 'pako';
+import html2pdf from 'html2pdf.js';
+import { FaFilePdf } from "react-icons/fa";
+import { css } from "@emotion/react";
+
+import { decompressString } from "../Components/decompress.mjs";
+
 import './ViewPage.css'
 import {
   Flex,
@@ -22,13 +29,33 @@ import {
 import { RiHome2Line } from "react-icons/ri";
 
 import Menu from "../Components/Menu/Menu";
-import { fetchEssays } from "../Components/fetch";
+import { fetchEssays } from "../Components/fetch.mjs";
 import { updateEssay } from "../Components/fetch.mjs";
 import TopBar from "../Components/TopBar/TopBar";
 import SummaryDrawer from "./Components/Summary";
+import DownloadPdfButton from "./Components/DownloadPdfButton";
+
+
 
 const ViewPage = () => {
 
+  
+  // function inflateData(compressedData) {
+  //   const data = new Uint8Array(compressedData.data);
+  //   console.log("DATA - ", data)
+  //   const inflated_data = pako.inflate(data);
+  //   console.log(inflated_data)
+  //   }
+  
+  
+  const downloadFile = (fileContent) => {
+    const element = document.createElement("a");
+    const file = new Blob([fileContent], {type: 'text/html'});
+    element.href = URL.createObjectURL(file);
+    element.download = "example.html";
+    document.body.appendChild(element);
+    element.click();
+  };
   const nav = useNavigate();
 
 
@@ -37,33 +64,39 @@ const ViewPage = () => {
 
   
   const [formData, setFormData] = useState((JSON.parse(location.state.raw_prompt)).prompt);
+  console.log(location.state.content)
+
   const [essay, setEssay] = useState(location.state);
-  const [content, setContent] = useState(location.state.content);
+  const [content, setContent] = useState(decompressString(location.state.content));
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [topbarcol, setTopbarcol] = useState("");
   const [topbartop, setTopbartop] = useState("");
   const [loading, setLoading] = useState(false);
-
-  console.log(formData)
-
-  const sanitizedHtml = DOMPurify.sanitize(location.state.content, {
-    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a'],
+  const [sanitized, setSanitized] = useState(DOMPurify.sanitize(decompressString(location.state.content), {
+    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a','h1','h2','h3'],
     ALLOWED_ATTR: ['href']
-  });
-
+  }))
+  console.log(formData)
+  useEffect(()=>{
+    setSanitized(DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a','h1','h2','h3'],
+      ALLOWED_ATTR: ['href']
+    }))
+    console.log(sanitized)
+  },[content])
 
   const [usrData, setUsrData] = useState('');
   
   const createPages = () => {
     try {
-    console.log(content)
-    if (content == undefined) {
+    console.log(sanitized)
+    if (sanitized == undefined) {
       return [];
     }
     let maxPageLength;
     if (isMobile) { maxPageLength = 1500}
     else {maxPageLength = 3000;}
-    const words = content.split(" ");
+    const words = sanitized.split(" ");
     let currentPage = 1;
     let currentPageContent = "";
     const pages = [];
@@ -118,7 +151,7 @@ const ViewPage = () => {
               }, {});
               console.log("HEEERE - ",indexed[location.state.id])
               setEssay(indexed[location.state.id]);
-              setContent(indexed[location.state.id].content)
+              setContent(decompressString(indexed[location.state.id].content))
               setLoading(false)
   
             }).then(() => {
@@ -136,7 +169,7 @@ const ViewPage = () => {
         
     }
 
-  const [p,setP] = useState(createPages(location.state.content));
+  const [p,setP] = useState(createPages(decompressString(location.state.content)));
 
     useEffect(() => {
       const data = JSON.parse(localStorage.getItem("data"));
@@ -144,15 +177,16 @@ const ViewPage = () => {
       if (data) {
         setUsrData(data);
       }
-      const pages = createPages(content);
+      console.log(content)
+      const pages = createPages(decompressString([content]));
       setP(pages);
     }, [content]);
     
+  console.log(p)
 
   const PAGE_HEIGHT = "30cm";
   const PAGE_WIDTH = "21cm";
 
-  console.log(p)
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -178,15 +212,36 @@ const ViewPage = () => {
     
     }}, [isMobile])
 
+    const downloadPdf = () => {
+      const html = sanitized; // replace with your HTML string
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = html;
+      
+      const options = {
+        filename: `${formData.title}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      };
+      
+      html2pdf().from(tempElement).set(options).save();
+    }
+
+    const handleDownload = () => {
+      downloadPdf();
+    };
+  
+
   return (
     <>
     
     <Box  p={4} position="fixed" top={topbartop} left="0" width="100%" zIndex="1" >
     <TopBar menu={true} bg={topbarcol}/>
     </Box>
+    <DownloadPdfButton onDownload={() => handleDownload()} isMobile={isMobile}/>
 
     {!isMobile ? (
-      
+
       <Flex px="8" py="4" height="100vh" alignItems="flex-start" >
         
         

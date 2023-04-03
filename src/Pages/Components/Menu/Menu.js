@@ -30,13 +30,17 @@ import HelpModal from "./Components/HelpModal";
 import PricingModal from "./Components/PricingModal";
 import SettingsModal from "./Components/SettingsModal";
 import Inventory from "./Components/Inventory";
-
-
+import TermsOfService from "./Components/TermsOfService";
+import PrivacyPolicy from "./Components/PrivacyPolicy";
 
 function Menu(props) {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isPricingOpen, setIsPricingOpen] = useState(false);
     const [isHelpOpen, setIsHelpOpen] = useState(false);
+    const [isTOSopen, setIsTOSopen] = useState(false);
+    const [isPPopen, setIsPPopen] = useState(false);
+
+
   
     const openSettingsModal = () => setIsSettingsOpen(true);
     const closeSettingsModal = () => setIsSettingsOpen(false);
@@ -44,16 +48,31 @@ function Menu(props) {
     const closePricingModal = () => setIsPricingOpen(false);
     const openHelpModal = () => setIsHelpOpen(true);
     const closeHelpModal = () => setIsHelpOpen(false);
+    const closeTOS = () => setIsTOSopen(false);
+    const closePP = () => setIsPPopen(false);
+
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const [usrData, setUsrData] = useState('');
+
+    useEffect(() => { // retrieve user data from localstorage
+      const data = (JSON.parse(localStorage.getItem("data"))).data;
+      console.log(data)
+      if (data) {
+        setUsrData(data);
+      }
+    }, []);
+    console.log(usrData)
+
     useEffect(() => {if (props.showPriceModal) {setIsPricingOpen(true)}}, [props.showPriceModal]);
-    console.log(props.showPriceModal)
+    // console.log(props.showPriceModal)
     return (
       <>
     <SettingsModal isOpen={isSettingsOpen} onClose={closeSettingsModal}/>
     <PricingModal isOpen={isPricingOpen} onClose={closePricingModal} />
     <HelpModal isOpen={isHelpOpen} onClose={closeHelpModal} />
-
+    <TermsOfService isOpen={isTOSopen} onClose={closeTOS}></TermsOfService>
+    <PrivacyPolicy isOpen={isPPopen} onClose={closePP}></PrivacyPolicy>
       {/* Drawer */}
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} paddingRight={"10%"}>
       <DrawerOverlay />
@@ -75,10 +94,10 @@ function Menu(props) {
           <Text fontSize="xl" fontWeight="bold" mt={4} mb={8}>
             Inventory
           </Text>
-          <Inventory basic={5} standard={10} premium={15}/>
+          <Inventory basic={usrData.basic} standard={usrData.standard} premium={usrData.premium}/>
           <Box pt={8} display="flex" justifyContent="center" alignItems="flex-end" bottom={0}>
-            <Link to="/privacy">Privacy Policy ·  </Link>
-            <Link to="/terms"> Terms of Service</Link>
+            <p onClick={() => setIsPPopen(true)}> Privacy Policy ·  </p>
+            <p onClick={() => setIsTOSopen(true)}> Terms of Service </p>
           </Box>
         </Stack>
       </DrawerContent>

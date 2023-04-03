@@ -1,15 +1,14 @@
-import { resolveMotionValue } from "framer-motion";
 
-const URL = "https://1da8-37-133-87-18.eu.ngrok.io" ;
-// const URL = "http://localhost:3000"
+const URL = "https://5659-37-133-87-18.eu.ngrok.io" ;
+// const URL = "http://localhost:3001"
 
 export async function fetchEssays(usrData) {
-
+    console.log("USERDATAINFETCH - ", usrData)
     return await fetch(`${URL}/retrieve-data`, {
+      credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${usrData.token}`
       },
       body: JSON.stringify({
         id: usrData.data.id,
@@ -61,6 +60,7 @@ export async function fetchEssays(usrData) {
 export async function fetchLogin(email,password) {
 
     return await fetch(`${URL}/login`, {
+      credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -68,14 +68,12 @@ export async function fetchLogin(email,password) {
       body: JSON.stringify({
         email: email,
         password: password,
-      })
+       }),
+      
     })
       .then(response => response.text())
       .then(data => {
-        
-        // setResponse(JSON.parse(data))
-        // setAlert(true)
-        // console.log(response)
+      
         localStorage.setItem("data",  JSON.stringify(JSON.parse(data)))
         return JSON.parse(data);
         // if (response.status == "success") {nav("/home")}
@@ -89,14 +87,12 @@ export async function fetchLogin(email,password) {
   }
 
 export async function createEssay(usrData, formData) {
-    const token = usrData.token;
     return await fetch(`${URL}/create_essay`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-
       },
+      credentials: 'include',
       body: JSON.stringify({prompt: formData})
     },)
       .then(response => response.text())
@@ -106,14 +102,13 @@ export async function createEssay(usrData, formData) {
 
 
 export async function getConfig(usrData) {
-  const token = usrData.token;
   return await fetch(`${URL}/config`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
 
-    }
+    },
+    credentials: 'include'
   
   },).then(async (r) => {
       
@@ -130,9 +125,9 @@ export async function createPaymentIntent(usrData, plan, token) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
 
       },
+      credentials: 'include',
       body: JSON.stringify({
         purchaser: {user: usrData, plan: plan}
       })
@@ -143,14 +138,13 @@ export async function createPaymentIntent(usrData, plan, token) {
 }
 
 export async function updateEssay(usrData, essay_id) {
-      const token = usrData.token;
 
       return await fetch(`${URL}/update-essay`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify({
           data: { essay_id: essay_id }
 
@@ -169,14 +163,14 @@ export async function updateEssay(usrData, essay_id) {
 
 export async function changePassword(usrData,oldPassword,newPassword) {
   console.log(usrData)
-  const token = usrData.token;
+  console.log(usrData.data.email)
 
   return await fetch(`${URL}/change-password`, {
     method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify({
           data: { email: usrData.data.email, oldPassword: oldPassword, newPassword: newPassword}
 
