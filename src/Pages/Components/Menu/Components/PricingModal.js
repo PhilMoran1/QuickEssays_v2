@@ -25,7 +25,6 @@ import {
     const handleCheckout = () => {
       
       setShowForm(true)
-      console.log(showForm)
     }
 
     return (

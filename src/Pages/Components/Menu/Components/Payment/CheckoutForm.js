@@ -21,8 +21,6 @@ export default function CheckoutForm(props) {
 
     setIsProcessing(true);
     
-    console.log(elements)
-
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -33,22 +31,12 @@ export default function CheckoutForm(props) {
 
     });
 
-    console.log(error)
     if (error) {
         setMessage({status: "error", message: error.message})
 
     } else if (paymentIntent && paymentIntent.status === "succeeded") { 
-        console.log(paymentIntent)
         setMessage({status: "success", message: "Payment status: " + paymentIntent.status})
     }
-
-    // if (error.type === "card_error" || error.type === "validation_error") {
-    //   setMessage(error.message);
-    // } else {
-    //     console.log(error.message)
-    //   setMessage("An unexpected error occured.");
-    // }
-
     setIsProcessing(false);
   };
 

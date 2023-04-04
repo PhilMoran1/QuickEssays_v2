@@ -124,7 +124,6 @@ const MultiStepForm = () => {
 
   useEffect(() => { // retrieve user data from localstorage
     const data = (JSON.parse(localStorage.getItem("data"))).data;
-    console.log(data)
     if (data) {
       setUsrData(data);
     }
@@ -204,8 +203,6 @@ const MultiStepForm = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
     
-  useEffect(() => {console.log("current - ",currentStep)},[currentStep])
-
   const handlePreviousStep = () => {
     setCurrentStep((prevStep) => prevStep - 1);
   };
@@ -320,6 +317,7 @@ const MultiStepForm = () => {
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
+                <Text size={"sm"}>Length is not an exact feature.</Text>
               </FormControl>
             )}
 

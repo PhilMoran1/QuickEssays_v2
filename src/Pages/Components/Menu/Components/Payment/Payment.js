@@ -11,7 +11,6 @@ function Payment(props) {
   
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("data"));
-    console.log(data)
     if (data) {
       setUsrData(data);
     }
@@ -20,8 +19,6 @@ function Payment(props) {
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
 
-  const plan = props.plan;
-  console.log(props.plan)
   useEffect(() => {
 
     getConfig(usrData).then((result) => {

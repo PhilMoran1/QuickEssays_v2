@@ -34,7 +34,6 @@ function SettingsModal({ isOpen, onClose }) {
 
   useEffect(() => { // retrieve user data from localstorage
     const data = JSON.parse(localStorage.getItem("data"));
-    console.log(data)
     if (data) {
       setUsrData(data);
     }
@@ -51,7 +50,6 @@ function SettingsModal({ isOpen, onClose }) {
 
     changePassword(usrData,oldPassword, newPassword)
     .then((result) => { 
-      console.log(result)
       setResponse(result);
       setAlert(true);
     }).catch((error) => {console.log(error)});

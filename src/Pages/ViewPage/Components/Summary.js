@@ -35,7 +35,6 @@ function SummaryDrawer(props) {
     
   };
   const [formData, setFormData] = useState(props.formData)
-  useEffect(() => {console.log(formData)},[formData])
 
   return (
     <>
@@ -137,7 +136,7 @@ function SummaryDrawer(props) {
             <FormLabel>About</FormLabel>
             <Text marginBottom={"20%"}>{formData.about}</Text>
         {props.essay.retries > 0 ? (
-          <Button mt={9} colorScheme="blue" width="100%" left="0" bottom="4" position="absolute" onClick={props.onRetry}>Retry</Button>
+          <Button mt={9} colorScheme="blue" width="100%" left="0" bottom="4" position="absolute" onClick={props.onRetry}>Retry , {props.essay.retries} left</Button>
         ) : (
           <Button mt={9} colorScheme="gray" width="100%" left="0" bottom="4" position="absolute" onClick={() => {setShowMessage(true)}}>Retry</Button>
         )}

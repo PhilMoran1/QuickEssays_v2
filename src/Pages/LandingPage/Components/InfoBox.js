@@ -10,7 +10,6 @@ function InfoBox(props) {
     const [width, setWidth] = useState("30%");
     useEffect(() => {if (props.context != "") {setWidth("100%")}}, [props.context])
 
-    console.log("HERE")
 
     return(
         <>

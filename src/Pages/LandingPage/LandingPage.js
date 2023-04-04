@@ -4,6 +4,7 @@ import { isRouteErrorResponse, useNavigate } from 'react-router-dom';
 import {
     Box,
     Button,
+    Checkbox,
     Flex,
     Heading,
     Image,
@@ -28,7 +29,8 @@ import {
 import { createAccount, fetchLogin } from '../Components/fetch.mjs';
 import InfoBox from './Components/InfoBox';
 import TypeEffect from './Components/TypeEffect';
-
+import TermsOfService from '../Components/Menu/Components/TermsOfService.js';
+import PrivacyPolicy from '../Components/Menu/Components/PrivacyPolicy.js';
 function LandingPage() {
     
     const nav = useNavigate()
@@ -40,6 +42,12 @@ function LandingPage() {
     const [name, setName] = useState('');
     const [response, setResponse] = useState('')
     const [alert, setAlert] = useState(false)
+    const [isChecked, setIsChecked] = useState(false);
+    const [isTOSopen, setIsTOSopen] = useState(false);
+    const [isPPopen, setIsPPopen] = useState(false);
+    const closeTOS = () => setIsTOSopen(false);
+    const closePP = () => setIsPPopen(false);
+
     const handleLoginOpen = () => setShowLoginModal(true);
     const handleLoginClose = () => setShowLoginModal(false);
   
@@ -49,7 +57,6 @@ function LandingPage() {
     
     const handleLoginSubmit = (e) => {
         e.preventDefault();
-        console.log(`Email: ${email}, Password: ${password}`);
         fetchLogin(email,password).then((result) => {
             setResponse(result)
             setAlert(true)
@@ -58,8 +65,9 @@ function LandingPage() {
       };
 
     const handleSignupSubmit = (e) => {
+      if (isChecked) {
+        // submit signup data to server
         e.preventDefault();
-        console.log(`Name: ${name}, Email: ${email}, Password: ${password}`);
         // handle signup logic here
         createAccount(name,email,password).then((result) => {
 
@@ -74,13 +82,21 @@ function LandingPage() {
                 setAlert(true)
             }
           }).catch((error) => {
-            console.log(error)
           });
+      } else {
+        setResponse({status: "error", message: "Please read and accept the terms of service and privacy policy."})
+        setAlert(true);  
+      }
     
     };
     
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [flexdir,setFlexdir] = useState("")
+
+    const handleCheckboxChange = (event) => {
+      setIsChecked(event.target.checked);
+    };
+
     useEffect(() => {
       function handleResize() {
         setIsMobile(window.innerWidth < 768);
@@ -91,9 +107,10 @@ function LandingPage() {
     }, []);
 
     useEffect(() => {if (isMobile) {setFlexdir("column")} else { setFlexdir("") }}, [isMobile])
-
   return (
-    
+    <>
+    <TermsOfService isOpen={isTOSopen} onClose={closeTOS}></TermsOfService>
+    <PrivacyPolicy isOpen={isPPopen} onClose={closePP}></PrivacyPolicy>
     <Flex
       direction="column"
       align="center"
@@ -102,6 +119,7 @@ function LandingPage() {
       bg="#d2d2d2"
       position="relative"
     >
+    
         <Modal isOpen={showLoginModal} onClose={handleLoginClose}>
         <ModalOverlay />
         <ModalContent>
@@ -159,6 +177,13 @@ function LandingPage() {
                 <Input type="password" onChange={(event) => {setPassword(event.target.value)}}/>
               </FormControl>
             </Stack>
+            <Checkbox isChecked={isChecked} onChange={handleCheckboxChange}>
+              I have read and agree to the terms of service and privacy policy.
+            </Checkbox>
+            <Box pt={8} display="flex" justifyContent="center" alignItems="flex-end" bottom={0}>
+            <Text onClick={() => {setIsPPopen(true); setShowSignupModal(false)}} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Privacy Policy ·  </Text>
+            <Text onClick={() => {setIsTOSopen(true); setShowSignupModal(false)}} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Terms of Service </Text>
+          </Box>
           </ModalBody>
 
           <ModalFooter>
@@ -277,12 +302,15 @@ function LandingPage() {
           &copy; 2023, QuickEssays. All rights reserved.
         </Text>
         <Stack direction="row" spacing={6}>
-          <Link href="#">Privacy Policy</Link>
-          <Link href="#">Terms of Use</Link>
-          <Link href="#">Contact Us</Link>
+          <Text onClick={() => {setIsPPopen(true)}} _hover={{ textDecoration: "underline", cursor: "pointer"}}>Privacy Policy</Text>
+          <Text onClick={() => {setIsTOSopen(true)}} _hover={{ textDecoration: "underline", cursor: "pointer" }}>Terms of Use</Text>
+          <Box as="a" href="mailto:support@quickessays.app" _hover={{ textDecoration: "underline", cursor: "pointer" }}>
+          <Text>Contact Us</Text>
+          </Box>
         </Stack>
       </Flex>
     </Flex>
+    </>
   );
 }
 

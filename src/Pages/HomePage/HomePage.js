@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 import {  FaPlus } from 'react-icons/fa';
-import { AiOutlineFile, AiFillFile } from 'react-icons/ai'; 
+import { AiOutlineFile, AiFillFile, AiOutlineConsoleSql } from 'react-icons/ai'; 
 
 import { fetchEssays } from "../Components/fetch.mjs";
 import Menu from "../Components/Menu/Menu";
@@ -40,7 +40,6 @@ function HomePage() {
   
   useEffect(() => { // retrieve user data from localstorage
     const data = JSON.parse(localStorage.getItem("data"));
-    console.log(data)
     if (data) {
       setUsrData(data);
     }
@@ -49,18 +48,12 @@ function HomePage() {
   useEffect(() => {
     if (usrData) { // fetch and set essays
       fetchEssays(usrData).then((result) => {
-        console.log(result)
         if (result.status == "error") {
           nav('/') // with message saying session expired
         }
-        // let update = usrData;
-        // update.data = result;
-        // setUsrData(update)
-        console.log("HEHREHREHR - ", result)
-        console.log("USRDATA - ", usrData);
+    
         let update = usrData;
         update.data = result.usr;
-        console.log("newUSRDATA . ", update)
         
         console.log()
         localStorage.setItem("data", JSON.stringify(update));
@@ -69,59 +62,81 @@ function HomePage() {
     }
   }, [usrData])
 
-  // useEffect(() => {
-  //   let update = usrData;
-  //   console.log(essays)
-  //   update.data = essays.usr;
-  //   console.log(update)
-
-  //   setUsrData(update)
-  //   // setUsrData(essays)
-  // },[essays])
-  
-  useEffect(() => {
+//   useEffect(() => {
     
     
-    if (essays) { // check if essays has been set
-      try { // generate images and store them in object
-        const promises = essays.data.map((essay) => {
-          const div = document.createElement('div');
-          div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + decompressString(essay.content) + "</body></html>";
-          return htmlToImage.toPng(div, { width: 800, height: 600 })
-            .then(dataUrl => {
-              essay.image = dataUrl;
-              essay.html = div;
-            })
-            .catch(error => {
-              // Handle errors
-              console.log(error)
-            });
-        });
+//     if (essays) { // check if essays has been set
+//       try { // generate images and store them in object
+//         const promises = essays.data.map((essay) => {
+//           const div = document.createElement('div');
+//           const decompressed_content = await decompressString(essay.content);
+//           div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + decompressed_content.slice(0,1500) + "</body></html>";
+//           return htmlToImage.toPng(div, { width: 800, height: 600 })
+//             .then(dataUrl => {
+//               essay.image = dataUrl;
+//               essay.html = div;
+//             })
+//             .catch(error => {
+//               // Handle errors
+//             });
+//         });
   
-        Promise.all(promises).then(() => {
-          console.log("MADE IMAGES here")
+//         Promise.all(promises).then(() => {
   
-          setLoading(false)
+//           setLoading(false)
   
           
-        });
+//         });
   
-      } catch (error) { 
-        // console.log(error) 
-      }
-    } else {
+//       } catch (error) { 
+//         // console.log(error) 
+//       }
+//     } else {
+//     }
+//   }, [essays])
+  
+//   useEffect(() => {
+//     try {
+//     if (essays.data.length < 1) {
+//       setShowMessage(true)
+//     } else {
+//       setLoading(false)
+//     }
+//   } catch {
+//   }
+  
+//  },[essays])
+
+useEffect(() => {
+  if (essays) { // check if essays has been set
+    try { // generate images and store them in object
+      const promises = essays.data.map(async (essay) => {
+        const div = document.createElement('div');
+        const decompressed_content = await decompressString(essay.content);
+        div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + decompressed_content.slice(0,1500) + "</body></html>";
+        return htmlToImage.toPng(div, { width: 800, height: 600 })
+          .then(dataUrl => {
+            essay.image = dataUrl;
+            essay.html = div;
+          })
+          .catch(error => {
+            // Handle errors
+          });
+      });
+
+      Promise.all(promises).then(() => {
+
+        setLoading(false)
+
+      });
+
+    } catch (error) { 
+      // console.log(error) 
     }
-  }, [essays])
-  
-  useEffect(() => {
-    if (essays != {}) {
-      setShowMessage(true)
-    } else {
-      setLoading(false)
-    }
-  console.log("eEASDASDSA",essays)
-  
- },[essays])
+  } else {
+  }
+}, [essays])
+
   
   useEffect(() => {
     try {
@@ -129,7 +144,6 @@ function HomePage() {
         square.title.toLowerCase().includes(searchText.toLowerCase())
       ))
     } catch (error) {
-      //console.log(error)
     }
   },[searchText,loading])
 
@@ -146,10 +160,6 @@ function HomePage() {
 
   const handleCreate = () => {
     const a = usrData.data;
-    console.log(a)
-    console.log("standard - ",a.standard)
-    console.log(a.basic)
-    console.log(a.premium)
     if (a.standard == 0 && a.basic == 0 && a.premium == 0) {
       setShowPriceModal(true)
     } else {
@@ -158,7 +168,6 @@ function HomePage() {
   }
 
   const closePricingModal = () => setShowPriceModal(false);
-
 
   return (
     <>

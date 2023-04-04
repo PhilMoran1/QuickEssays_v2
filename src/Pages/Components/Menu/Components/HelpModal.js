@@ -14,20 +14,17 @@ import {
   Text,
   Textarea,
   Alert,
-  AlertIcon
+  AlertIcon,
+  Link
 } from "@chakra-ui/react";
 
 function HelpModal({ isOpen, onClose }) {
   const [subject, setSubject] = useState("");
   const [about, setAbout] = useState("");
-  const [isSent, setIsSent] = useState(false);
+  const [response, setResponse] = useState(false);
 
-  const handleSend = () => {
-    // send the message and update the state
-    setIsSent(true);
-  };
   useEffect(() => {
-    if (isOpen == false) { setIsSent(false) }
+    if (isOpen == false) { setResponse(false) }
   },[isOpen])
 
   return (
@@ -37,8 +34,8 @@ function HelpModal({ isOpen, onClose }) {
         <ModalHeader>Help</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl>
-            <FormLabel>Subject</FormLabel>
+          {/*<FormControl>
+             <FormLabel>Subject</FormLabel>
             <Input
               placeholder="Enter subject"
               value={subject}
@@ -62,13 +59,14 @@ function HelpModal({ isOpen, onClose }) {
               Send
             </Button>
           </Flex>
-          {isSent && (
-            <Alert status="success" mt={4}>
+          {response && (
+            <Alert status={response.status} mt={4}>
               <AlertIcon />
-              Message has been sent. You will receive an email with our response.
+              {response.message}
             </Alert>
-          )}
-        </ModalBody>
+          )} */}
+      <Text>If you have any questions or need help, please contact us at <Link href="mailto:support@quickessays.app">support@quickessays.app</Link> And we'll get in touch as soon as we can. You can also find more information about our prices by visiting our pricing page. If you need to change your password, please visit settings page.</Text>
+             </ModalBody>
       </ModalContent>
     </Modal>
   );

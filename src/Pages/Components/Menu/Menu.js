@@ -57,12 +57,10 @@ function Menu(props) {
 
     useEffect(() => { // retrieve user data from localstorage
       const data = (JSON.parse(localStorage.getItem("data"))).data;
-      console.log(data)
       if (data) {
         setUsrData(data);
       }
     }, []);
-    console.log(usrData)
 
     useEffect(() => {if (props.showPriceModal) {setIsPricingOpen(true)}}, [props.showPriceModal]);
     // console.log(props.showPriceModal)
@@ -96,8 +94,8 @@ function Menu(props) {
           </Text>
           <Inventory basic={usrData.basic} standard={usrData.standard} premium={usrData.premium}/>
           <Box pt={8} display="flex" justifyContent="center" alignItems="flex-end" bottom={0}>
-            <p onClick={() => setIsPPopen(true)}> Privacy Policy ·  </p>
-            <p onClick={() => setIsTOSopen(true)}> Terms of Service </p>
+            <Text onClick={() => setIsPPopen(true)} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Privacy Policy · </Text>
+            <Text onClick={() => setIsTOSopen(true)} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Terms of Service </Text>
           </Box>
         </Stack>
       </DrawerContent>

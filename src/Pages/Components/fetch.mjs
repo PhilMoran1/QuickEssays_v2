@@ -1,9 +1,8 @@
 
-const URL = "https://5659-37-133-87-18.eu.ngrok.io" ;
+const URL = "https://4d79-37-133-87-18.eu.ngrok.io" ;
 // const URL = "http://localhost:3001"
 
 export async function fetchEssays(usrData) {
-    console.log("USERDATAINFETCH - ", usrData)
     return await fetch(`${URL}/retrieve-data`, {
       credentials: 'include',
       method: 'POST',
@@ -16,7 +15,6 @@ export async function fetchEssays(usrData) {
     })
       .then(response => response.text())
       .then(data => {
-        console.log(JSON.parse(data))
         return JSON.parse(data);
       })
       .catch(error => {
@@ -29,11 +27,6 @@ export async function fetchEssays(usrData) {
 
 
   export async function createAccount(name,email,password) {
-    console.log(name)
-    console.log(email)
-
-    console.log(password)
-
     return await fetch(`${URL}/create-account`, {
       method: 'POST',
       headers: {
@@ -73,16 +66,11 @@ export async function fetchLogin(email,password) {
     })
       .then(response => response.text())
       .then(data => {
-      
         localStorage.setItem("data",  JSON.stringify(JSON.parse(data)))
         return JSON.parse(data);
-        // if (response.status == "success") {nav("/home")}
-
-        
       })
       .catch(error => {
         return error;
-        // setResponse(error)
       });
   }
 
@@ -96,7 +84,7 @@ export async function createEssay(usrData, formData) {
       body: JSON.stringify({prompt: formData})
     },)
       .then(response => response.text())
-      .then(data => {console.log(data);})
+      .then(data => {})
       .catch(error => console.error(error));
   }
 
@@ -113,10 +101,7 @@ export async function getConfig(usrData) {
   },).then(async (r) => {
       
       const { publishableKey } = await r.json();
-      console.log("got pub key") 
-      console.log(publishableKey)
       return publishableKey;
-      // setStripePromise(loadStripe(publishableKey));
     }).catch((error) => {console.log(error)});
 }
 
@@ -152,7 +137,6 @@ export async function updateEssay(usrData, essay_id) {
       })
         .then(response => response.text())
         .then(data => {
-          console.log(JSON.parse(data))
         })
         .catch(error => {
           console.log(error)
@@ -187,3 +171,28 @@ export async function changePassword(usrData,oldPassword,newPassword) {
 
         });
 }
+
+// export async function handleFeedBack(subject, about) {
+    
+//   return await fetch(`${URL}/handle-feedback`, {
+//     method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         credentials: 'include',
+//         body: JSON.stringify({
+//           subject: subject,
+//           about: about
+//         })
+//       })
+//         .then(response => response.text())
+//         .then(data => {
+//           console.log(JSON.parse(data))
+//           return JSON.parse(data)
+//         })
+//         .catch(error => {
+//           console.log(error)
+//           return error
+
+//         });
+// } 

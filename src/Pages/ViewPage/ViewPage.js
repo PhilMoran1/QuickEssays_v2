@@ -23,7 +23,8 @@ import {
   FormLabel,
   SimpleGrid,
   Input,
-  Image
+  Image,
+  Spinner
 } from "@chakra-ui/react";
 
 import { RiHome2Line } from "react-icons/ri";
@@ -39,32 +40,13 @@ import DownloadPdfButton from "./Components/DownloadPdfButton";
 
 const ViewPage = () => {
 
-  
-  // function inflateData(compressedData) {
-  //   const data = new Uint8Array(compressedData.data);
-  //   console.log("DATA - ", data)
-  //   const inflated_data = pako.inflate(data);
-  //   console.log(inflated_data)
-  //   }
-  
-  
-  const downloadFile = (fileContent) => {
-    const element = document.createElement("a");
-    const file = new Blob([fileContent], {type: 'text/html'});
-    element.href = URL.createObjectURL(file);
-    element.download = "example.html";
-    document.body.appendChild(element);
-    element.click();
-  };
   const nav = useNavigate();
 
 
   const location = useLocation();
-  console.log(location)
 
   
   const [formData, setFormData] = useState((JSON.parse(location.state.raw_prompt)).prompt);
-  console.log(location.state.content)
 
   const [essay, setEssay] = useState(location.state);
   const [content, setContent] = useState(decompressString(location.state.content));
@@ -76,23 +58,23 @@ const ViewPage = () => {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a','h1','h2','h3'],
     ALLOWED_ATTR: ['href']
   }))
-  console.log(formData)
+
   useEffect(()=>{
     setSanitized(DOMPurify.sanitize(content, {
       ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a','h1','h2','h3'],
       ALLOWED_ATTR: ['href']
     }))
-    console.log(sanitized)
   },[content])
 
   const [usrData, setUsrData] = useState('');
   
   const createPages = () => {
     try {
-    console.log(sanitized)
     if (sanitized == undefined) {
       return [];
     }
+    console.log(sanitized)
+
     let maxPageLength;
     if (isMobile) { maxPageLength = 1500}
     else {maxPageLength = 3000;}
@@ -112,10 +94,10 @@ const ViewPage = () => {
         currentPageContent = newContent;
     }
     }
-
-    pages.push(currentPageContent);
-    console.log(content)
-    console.log(pages)
+    if (currentPageContent !== "") {
+      pages.push(currentPageContent);
+    }
+    
     return pages; //setP(pages)
   } catch (error) {console.log(error); return [];}
   }
@@ -123,40 +105,33 @@ const ViewPage = () => {
   const handleRetry = async () => {
 
       if (!usrData) {
-        console.log("usrData not defined");
         return;
       }
       setLoading(true)
-
-      console.log("USRDATA - ", usrData)
   
       const token = usrData.token;
 
         updateEssay(usrData,location.state.id).then((result) => {
-          console.log("RESULRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",result)
           setLoading(false)
-          console.log(usrData)
           if (usrData) {
-            console.log()
             fetchEssays(usrData).then((result) => {
-              console.log(result)
               if (result.status == "error") {
                 nav('/') // with message saying session expired
               }
           
-              console.log("RESULT - ", result.data)
               const indexed = result.data.reduce((acc, obj) => {
                 acc[obj.id] = obj;
                 return acc;
               }, {});
-              console.log("HEEERE - ",indexed[location.state.id])
               setEssay(indexed[location.state.id]);
               setContent(decompressString(indexed[location.state.id].content))
+              createPages(decompressString(indexed[location.state.id].content))
               setLoading(false)
+              const decompressed_content = decompressString(indexed[location.state.id].content)
+              setP(createPages(decompressed_content))
   
             }).then(() => {
-              console.log(content)
-              createPages(content)
+              setP(createPages(content))
             }
               ).catch((error) => {console.log(error)})
   
@@ -173,16 +148,13 @@ const ViewPage = () => {
 
     useEffect(() => {
       const data = JSON.parse(localStorage.getItem("data"));
-      console.log(data);
       if (data) {
         setUsrData(data);
       }
-      console.log(content)
       const pages = createPages(decompressString([content]));
       setP(pages);
     }, [content]);
     
-  console.log(p)
 
   const PAGE_HEIGHT = "30cm";
   const PAGE_WIDTH = "21cm";
@@ -195,7 +167,6 @@ const ViewPage = () => {
   useEffect(() => {
     function handleResize() {
       setIsMobile(window.innerWidth < 768);
-      console.log(isMobile)
     }
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -234,7 +205,12 @@ const ViewPage = () => {
 
   return (
     <>
-    
+     {loading && (
+      <>
+      <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Spinner size="xl" />
+      </div>
+      </>)}
     <Box  p={4} position="fixed" top={topbartop} left="0" width="100%" zIndex="1" >
     <TopBar menu={true} bg={topbarcol}/>
     </Box>
@@ -294,8 +270,8 @@ const ViewPage = () => {
             </SimpleGrid>
             <FormLabel>About</FormLabel>
             <Text>{formData.about}</Text>
-
-        <Button mt={9} colorScheme="blue" width="100%" left="0" bottom="4" position="absolute" onClick={handleRetry}>Retry</Button>
+            
+        <Button mt={9} colorScheme="blue" width="100%" left="0" bottom="4" position="absolute" onClick={handleRetry}>Retry, {essay.retries} left</Button>
         </Box>
           
         </Box>
@@ -304,6 +280,7 @@ const ViewPage = () => {
       <Box flex="3">
   
     <Box id="content-container" mt={20} >
+ 
   {p.map((pageContent, index) => (
     <Box
       key={index}

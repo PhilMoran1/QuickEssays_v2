@@ -6,10 +6,8 @@ export function decompressString(compressedString) {
   const decompressedBuffer = pako.inflate(compressedBuffer);
   const decoder = new TextDecoder();
   const result = decoder.decode(decompressedBuffer);
-  console.log("successfully decompressed - ", result)
   return result;
 
   } catch (error) {
-    console.log("couldnt decompress - ", compressedString, " due to: ", error)
   }
 }

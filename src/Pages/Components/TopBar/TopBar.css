@@ -3,3 +3,8 @@
       display: none;
     }
   }
+
+  .chakra-modal__content {
+    overflow-y: auto !important;
+  }
+  
