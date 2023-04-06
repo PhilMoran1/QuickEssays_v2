@@ -1,95 +1,111 @@
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    Tabs,
-    TabList,
-    TabPanels,
-    Tab,
-    TabPanel,
-    Text,
-    Button,
-    Flex
-  } from "@chakra-ui/react";
-  import {Fragment, useState} from 'react'
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button,
+  Flex,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import Payment from "./Payment/Payment";
 
-  import Payment from './Payment/Payment'
+function PricingModal({ isOpen, onClose }) {
+  const [plan, setPlan] = useState({ plan: "basic", price: "2.99$" });
+  const [showForm, setShowForm] = useState(false);
 
-  function PricingModal({ isOpen, onClose }) {
-    // const [price,setPrice] = useState("2.99$")
-    const [plan,setPlan] = useState({plan: "basic" , price: "2.99$"})
-    const [showForm,setShowForm] = useState(false)
-    const handleCheckout = () => {
-      
-      setShowForm(true)
-    }
+  const plans = [
+    {
+      id: 1,
+      name: "Basic",
+      essays: 5,
+      retries: 2,
+      price: "2.99$",
+    },
+    {
+      id: 2,
+      name: "Standard",
+      essays: 10,
+      retries: 4,
+      price: "4.99$",
+    },
+    {
+      id: 3,
+      name: "Premium",
+      essays: 100,
+      retries: 6,
+      price: "39.99$",
+    },
+  ];
 
-    return (
-      <Modal isOpen={isOpen} onClose={() => {setShowForm(false); setPlan({plan: "basic" , price: "2.99$"}); onClose();}} >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Pricing</ModalHeader>
-          
-          <ModalCloseButton />
-          <ModalBody>
-          {showForm == true ? 
-          <Fragment>
-          <Payment plan={plan}></Payment>  
-          </Fragment>
-          : 
-          <Fragment>
-            <Tabs isFitted variant="enclosed">
-              <TabList mb="1em">
-                <Tab onClick={() => {setPlan({plan: "basic", price: "2.99$"})}}>Basic</Tab>
-                <Tab onClick={() => {setPlan({plan: "standard", price: "4.99$"})}}>Standard</Tab>
-                <Tab onClick={() => {setPlan({plan: "premium", price: "9.99$"})}}>Premium</Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  <Text fontSize="lg">
-                    5 Essays
-                  </Text>
-                  <Text mt={4}>
-                    Basic includes 5 essays with 5 retries per essay for the price of 2.99$.
+  const handleCheckout = () => {
+    setShowForm(true);
+  };
 
-                  </Text>
-                </TabPanel>
-                <TabPanel>
-                  <Text fontSize="lg">
-                    10 Essays
-                  </Text>
-                  <Text mt={4}>
-                  Standard includes 10 essays with 10 retries per essay for the price of 4.99$.
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={() => {
+        setShowForm(false);
+        setPlan({ plan: "basic", price: "2.99$" });
+        onClose();
+      }}
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Pricing</ModalHeader>
 
-                  </Text>
-                </TabPanel>
-                <TabPanel>
-                  <Text fontSize="lg">
-                    25 Essays
-                  </Text>
-                  <Text mt={4}>
-                    Premium includes 25 essays with 25 retries per essay for the price of 9.99$.
+        <ModalCloseButton />
+        <ModalBody>
+          {showForm ? (
+            <Payment plan={plan} />
+          ) : (
+            <>
+              <Table variant="simple" minWidth="100%">
+                <Thead>
+                  <Tr>
+                    <Th>Plan</Th>
+                    <Th>Essays</Th>
+                    <Th>Retries per essay</Th>
+                    <Th>Price</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {plans.map(({ id, name, essays, retries, price }) => (
+                    <Tr
+                      key={id}
+                      onClick={() => {
+                        setPlan({ plan: name.toLowerCase(), price });
+                      }}
+                      _hover={{ bg: "gray.100", cursor: "pointer" }}
+                      bg={plan.plan === name.toLowerCase() ? "gray.200" : ""}
+                    >
+                      <Td>{name}</Td>
+                      <Td>{essays}</Td>
+                      <Td>{retries}</Td>
+                      <Td>{price}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+              <Flex justifyContent="center" mt={4}>
+                <Button colorScheme="blue" onClick={handleCheckout}>
+                  Checkout {plan.price}
+                </Button>
+              </Flex>
+            </>
+          )}
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+}
 
-                  </Text>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-            <Flex justifyContent="center" mt={4}>
-            <Button colorScheme="blue" onClick={handleCheckout}>
-              Checkout {plan.price}
-            </Button>
-          </Flex>
-          </Fragment>
-          }
-
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    );
-  }
-  
-  export default PricingModal;
-  
+export default PricingModal;

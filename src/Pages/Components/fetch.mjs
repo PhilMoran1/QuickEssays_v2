@@ -1,5 +1,5 @@
 
-const URL = "https://4d79-37-133-87-18.eu.ngrok.io" ;
+const URL = "https://f8c0-37-133-87-18.eu.ngrok.io"
 // const URL = "http://localhost:3001"
 
 export async function fetchEssays(usrData) {
@@ -146,8 +146,6 @@ export async function updateEssay(usrData, essay_id) {
 
 
 export async function changePassword(usrData,oldPassword,newPassword) {
-  console.log(usrData)
-  console.log(usrData.data.email)
 
   return await fetch(`${URL}/change-password`, {
     method: 'POST',
@@ -169,6 +167,28 @@ export async function changePassword(usrData,oldPassword,newPassword) {
           console.log(error)
           return error
 
+        });
+}
+
+export async function updateEssayFeedBack(essay_id, feedback) {
+  return await fetch(`${URL}/essay_feedback`, {
+    method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          data: { feedback: feedback, essay_id: essay_id }
+        })
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(JSON.parse(data))
+          return JSON.parse(data)
+        })
+        .catch(error => {
+          console.log(error)
+          return error
         });
 }
 

@@ -84,15 +84,15 @@ const tones = [
 
   
 const steps = [
-  { title: 'Step 1', content: 'set title and about' },
-  { title: 'Step 2', content: 'set style' },
-  { title: 'Step 3', content: 'set tone' },
-  { title: 'Step 4', content: 'perspective'},
-  { title: 'Step 5', content: 'audience'},
-  { title: 'Step 6', content: 'basic standard or permium'},
+  { title: 'Create Essay', content: 'set title and about' },
+  { title: 'Style', content: 'set style' },
+  { title: 'Tone', content: 'set tone' },
+  { title: 'Perspective', content: 'perspective'},
+  { title: 'Audience', content: 'audience'},
+  { title: 'Type', content: 'basic standard or premium'},
 
-  { title: 'Step 7', content: ''},
-  { title: 'Step 8', content: ''},
+  { title: '', content: ''},
+  { title: 'Generating', content: ''},
 
 ];
 
@@ -309,7 +309,7 @@ const MultiStepForm = () => {
                   onChange={handleInputChange}
                   required
                 />
-                <FormLabel>Length</FormLabel>
+                <FormLabel>Length (150 - 2000 words)</FormLabel>
                 <NumberInput name="length" value={formData.length || ''} onChange={handleLengthChange} defaultValue={150} min={150} max={2000} required>
                     <NumberInputField />
                     <NumberInputStepper >
@@ -323,7 +323,7 @@ const MultiStepForm = () => {
 
             {currentStep === 1 && (
               <FormControl mb={4}>
-                <FormLabel>Style</FormLabel>
+                {/* <FormLabel>Style</FormLabel> */}
                 <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                 
 
@@ -357,7 +357,7 @@ const MultiStepForm = () => {
 
             {currentStep === 2 && (
               <FormControl mb={4}>
-                <FormLabel>Tone</FormLabel>
+                {/* <FormLabel>Tone</FormLabel> */}
                 <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {tones.map((tone) => (
                     <Box
@@ -388,7 +388,7 @@ const MultiStepForm = () => {
             )}  
             {currentStep === 3 && (
               <FormControl mb={4}>
-                <FormLabel>Perspective</FormLabel>
+                {/* <FormLabel>Perspective</FormLabel> */}
                 <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {perspectives.map((perspective) => (
                     <Box
@@ -419,7 +419,7 @@ const MultiStepForm = () => {
             )}
             {currentStep === 4 && (
               <FormControl mb={4}>
-                <FormLabel>Audience</FormLabel>
+                {/* <FormLabel>Audience</FormLabel> */}
                 <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {audiences.map((audience) => (
                     <Box
@@ -450,7 +450,7 @@ const MultiStepForm = () => {
             )}
             {currentStep === 5 && (
               <FormControl mb={4}>
-                <FormLabel>Type</FormLabel>
+                {/* <FormLabel>Type</FormLabel> */}
                 <Grid templateColumns={`repeat(${nrows}, 1fr)`} gap={4}>
                   {types.map((type) => (
                     <Box
@@ -517,7 +517,7 @@ const MultiStepForm = () => {
             </Box>
           )}
           {formData.type === 'Premium' && (
-            <Box bg="purple.500" p={1} borderRadius="md" mt={2} >
+            <Box bg="orange.400" p={1} borderRadius="md" mt={2} >
               <Text fontSize="sm" color="white">{formData.type}</Text>
             </Box>
           )}

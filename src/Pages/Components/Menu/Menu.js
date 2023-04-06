@@ -62,6 +62,8 @@ function Menu(props) {
       }
     }, []);
 
+    
+
     useEffect(() => {if (props.showPriceModal) {setIsPricingOpen(true)}}, [props.showPriceModal]);
     // console.log(props.showPriceModal)
     return (
@@ -76,10 +78,11 @@ function Menu(props) {
       <DrawerOverlay />
       <DrawerContent bg="white" color="gray.700">
         <DrawerCloseButton />
-        <Text fontSize="xl" fontWeight="bold" mt={4} mb={8}>
-          Menu
-        </Text>
+        
         <Stack spacing={4} pl={4}>
+        <Text fontSize="xl" fontWeight="bold" mt={4} mb={8}>
+          Menu - {usrData.name}
+        </Text>
           <Button variant="ghost" leftIcon={<FaCog />} onClick={() => setIsSettingsOpen(true)}>
             Settings
           </Button>
@@ -94,8 +97,8 @@ function Menu(props) {
           </Text>
           <Inventory basic={usrData.basic} standard={usrData.standard} premium={usrData.premium}/>
           <Box pt={8} display="flex" justifyContent="center" alignItems="flex-end" bottom={0}>
-            <Text onClick={() => setIsPPopen(true)} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Privacy Policy · </Text>
-            <Text onClick={() => setIsTOSopen(true)} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Terms of Service </Text>
+            <Text onClick={() => {setIsPPopen(true); onClose()}} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Privacy Policy · </Text>
+            <Text onClick={() => {setIsTOSopen(true); onClose()}} _hover={{ textDecoration: "underline", cursor: "pointer"}}> Terms of Service </Text>
           </Box>
         </Stack>
       </DrawerContent>

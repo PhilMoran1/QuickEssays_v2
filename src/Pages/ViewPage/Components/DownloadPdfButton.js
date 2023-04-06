@@ -6,9 +6,7 @@ import { css } from "@emotion/react";
 function DownloadPdfButton(props) {
   return (
     <Button
-      position="fixed"
-      bottom="60px"
-      right="20px"
+      
       bg="blue.500"
       color="white"
       size="md"

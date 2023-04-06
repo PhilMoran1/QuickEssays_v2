@@ -31,6 +31,7 @@ import InfoBox from './Components/InfoBox';
 import TypeEffect from './Components/TypeEffect';
 import TermsOfService from '../Components/Menu/Components/TermsOfService.js';
 import PrivacyPolicy from '../Components/Menu/Components/PrivacyPolicy.js';
+import MoreInfo from './Components/MoreInfo.js';
 function LandingPage() {
     
     const nav = useNavigate()
@@ -64,7 +65,21 @@ function LandingPage() {
         }).catch((error) => {setResponse(error)});
       };
 
+    const validateEmail = () => {
+        const emailRegex = /\S+@\S+\.\S+/;
+        if (!emailRegex.test(email)) {
+          return false;
+        } else {
+          return true;
+        }
+      };
+
     const handleSignupSubmit = (e) => {
+      if (!validateEmail(email)) {
+        setResponse({status: "error", message: "Invalid Email adress"})
+        setAlert(true);
+        return;  
+      }
       if (isChecked) {
         // submit signup data to server
         e.preventDefault();
@@ -135,6 +150,7 @@ function LandingPage() {
                 <FormLabel>Password</FormLabel>
                 <Input type="password" onChange={(event) => {setPassword(event.target.value)}}/>
               </FormControl>
+              <a onClick={() => {nav("/forgot-password")}}>forgot password?</a>
             </Stack>
           </ModalBody>
 
@@ -169,7 +185,7 @@ function LandingPage() {
 
               <FormControl>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" onChange={(event) => {setEmail(event.target.value)}} />
+                <Input type="email" onChange={(event) => {setEmail(event.target.value)}}/>
               </FormControl>
 
               <FormControl>
@@ -202,11 +218,23 @@ function LandingPage() {
       </Modal>
 
         <Box position="absolute" top="0" right="0" p={4}>
-        <Button onClick={handleLoginOpen} bg="gray.700"size="md"       _hover={{ bg: "gray.800" }}>
+        <Button onClick={handleLoginOpen} bg="gray.700"size="md"       _hover={{ bg: "gray.800" }} zIndex={"999999999"}>
           <Text color="white">Log In</Text>
 
         </Button>
       </Box>
+      <div style={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '40%',
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          zIndex: 0,
+          overflow: 'hidden'
+
+        }}>
+        </div>
       <Box
         width="80%"
         maxW="1200px"
@@ -214,6 +242,7 @@ function LandingPage() {
         position="relative"
         zIndex="1"
       >
+        
       <Flex top={2} left={-5} position="absolute">
           <Image src="profilepic.jpg" alt="Logo" borderRadius="50%" boxSize="40px" />
           <Text
@@ -226,14 +255,23 @@ function LandingPage() {
           </Text>
           <Stack />
         </Flex>
-        <Heading as="h1" size="2xl" mb={6} color="#4d4d4d" mt="20">
+        <Text
+          fontSize={isMobile ? "250%" : "500%"}
+          fontWeight="bold"
+          mb={6}
+          color="#4d4d4d"
+          mt="20"
+        >
           Welcome to Quickessays!
-        </Heading>
+        </Text>
+
         <Text fontSize="xl" mb={12} color="#666">
           Powerful Essays written by the most advanced AI in the world!
         </Text>
+
         {!isMobile ? (
         <>
+        
         <Flex justifyContent="center" alignItems="center">
         <Box w="30%" css={{ position: "absolute" }}>
           <TypeEffect type="about"/>
@@ -270,18 +308,18 @@ function LandingPage() {
             />
             <InfoBox 
             price={"4.99$"}
-            info={"10 essays / 4 retries per essay"}ç
+            info={"10 essays / 4 retries per essay"}
             name={"Standard"}
             context={flexdir}
             />
             <InfoBox 
-            price={"8.99$"}
-            info={"15 essays / 6 retries per essay"}ç
+            price={"39.99$"}
+            info={"100 essays / 6 retries per essay"}
             name={"Premium"}
             context={flexdir}
             />
         </Flex>
-
+          <MoreInfo isMobile={isMobile}></MoreInfo>
       </Box>
       <Text opacity={0}>
             break       

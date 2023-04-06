@@ -17,7 +17,8 @@ const router = createBrowserRouter([
     {path: '/', element:  <LandingPage />},
     {path: '/home', element:  <HomePage />},
     {path: '/view', element:  <ViewPage />},
-    {path: '/create', element:  <MultiStepForm />}
+    {path: '/create', element:  <MultiStepForm />},
+    {path: '/forgot-password', element:  <MultiStepForm />}
 ]);
 
 

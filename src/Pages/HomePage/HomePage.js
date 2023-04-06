@@ -55,57 +55,13 @@ function HomePage() {
         let update = usrData;
         update.data = result.usr;
         
-        console.log()
+        if (result.data.length < 1) {setShowMessage(true)}
         localStorage.setItem("data", JSON.stringify(update));
         setEssays(result)
       }).catch((error) => {console.log(error)})
     }
   }, [usrData])
 
-//   useEffect(() => {
-    
-    
-//     if (essays) { // check if essays has been set
-//       try { // generate images and store them in object
-//         const promises = essays.data.map((essay) => {
-//           const div = document.createElement('div');
-//           const decompressed_content = await decompressString(essay.content);
-//           div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + decompressed_content.slice(0,1500) + "</body></html>";
-//           return htmlToImage.toPng(div, { width: 800, height: 600 })
-//             .then(dataUrl => {
-//               essay.image = dataUrl;
-//               essay.html = div;
-//             })
-//             .catch(error => {
-//               // Handle errors
-//             });
-//         });
-  
-//         Promise.all(promises).then(() => {
-  
-//           setLoading(false)
-  
-          
-//         });
-  
-//       } catch (error) { 
-//         // console.log(error) 
-//       }
-//     } else {
-//     }
-//   }, [essays])
-  
-//   useEffect(() => {
-//     try {
-//     if (essays.data.length < 1) {
-//       setShowMessage(true)
-//     } else {
-//       setLoading(false)
-//     }
-//   } catch {
-//   }
-  
-//  },[essays])
 
 useEffect(() => {
   if (essays) { // check if essays has been set
@@ -113,7 +69,7 @@ useEffect(() => {
       const promises = essays.data.map(async (essay) => {
         const div = document.createElement('div');
         const decompressed_content = await decompressString(essay.content);
-        div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + decompressed_content.slice(0,1500) + "</body></html>";
+        div.innerHTML = "<html><head><style> body { background-color: white; }</style></head><body>" + decompressed_content.slice(0,2500) + "</body></html>";
         return htmlToImage.toPng(div, { width: 800, height: 600 })
           .then(dataUrl => {
             essay.image = dataUrl;
@@ -168,7 +124,7 @@ useEffect(() => {
   }
 
   const closePricingModal = () => setShowPriceModal(false);
-
+  console.log(showMessage)
   return (
     <>
     <PricingModal isOpen={showPriceModal} onClose={closePricingModal}></PricingModal>

@@ -36,6 +36,10 @@ export default function CheckoutForm(props) {
 
     } else if (paymentIntent && paymentIntent.status === "succeeded") { 
         setMessage({status: "success", message: "Payment status: " + paymentIntent.status})
+        // Wait for 2 seconds before reloading the page
+        setTimeout(() => {
+          window.location.reload();
+        }, 10000);
     }
     setIsProcessing(false);
   };
