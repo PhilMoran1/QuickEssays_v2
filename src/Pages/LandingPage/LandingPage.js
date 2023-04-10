@@ -26,12 +26,13 @@ import {
     AlertIcon
   } from '@chakra-ui/react';
 
-import { createAccount, fetchLogin } from '../Components/fetch.mjs';
+import { createAccount, fetchLogin, forgotPassword } from '../Components/fetch.mjs';
 import InfoBox from './Components/InfoBox';
 import TypeEffect from './Components/TypeEffect';
 import TermsOfService from '../Components/Menu/Components/TermsOfService.js';
 import PrivacyPolicy from '../Components/Menu/Components/PrivacyPolicy.js';
 import MoreInfo from './Components/MoreInfo.js';
+import './LandingPage.css'
 function LandingPage() {
     
     const nav = useNavigate()
@@ -112,6 +113,15 @@ function LandingPage() {
       setIsChecked(event.target.checked);
     };
 
+    const handleForgotPassword = () => {
+      forgotPassword(email)
+      .then((result) => {
+        setResponse(result);
+        setAlert(true);
+      })
+      .catch((error) => {console.log(error)})
+    }
+
     useEffect(() => {
       function handleResize() {
         setIsMobile(window.innerWidth < 768);
@@ -122,6 +132,27 @@ function LandingPage() {
     }, []);
 
     useEffect(() => {if (isMobile) {setFlexdir("column")} else { setFlexdir("") }}, [isMobile])
+
+    useEffect(() => {
+      function handleScroll() {
+        const body = document.querySelector('body');
+        if (window.scrollY > 500) {
+          body.classList.add('scrolled');
+        } else {
+          body.classList.remove('scrolled');
+        }
+        if (window.scrollY > 1500) {
+          body.classList.add('scrolled-more');
+        } else {
+          body.classList.remove('scrolled-more');
+        }
+      }
+  
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, []);
   return (
     <>
     <TermsOfService isOpen={isTOSopen} onClose={closeTOS}></TermsOfService>
@@ -131,7 +162,7 @@ function LandingPage() {
       align="center"
       justify="space-between"
       minHeight="100vh"
-      bg="#d2d2d2"
+     
       position="relative"
     >
     
@@ -150,8 +181,10 @@ function LandingPage() {
                 <FormLabel>Password</FormLabel>
                 <Input type="password" onChange={(event) => {setPassword(event.target.value)}}/>
               </FormControl>
-              <a onClick={() => {nav("/forgot-password")}}>forgot password?</a>
-            </Stack>
+              <Link onClick={handleForgotPassword}>
+                  Forgot Password?
+              </Link>            
+      </Stack>
           </ModalBody>
 
           <ModalFooter>
@@ -218,23 +251,23 @@ function LandingPage() {
       </Modal>
 
         <Box position="absolute" top="0" right="0" p={4}>
-        <Button onClick={handleLoginOpen} bg="gray.700"size="md"       _hover={{ bg: "gray.800" }} zIndex={"999999999"}>
+        <Button onClick={handleLoginOpen} bg="gray.700"size="md"       _hover={{ bg: "gray.800" }} zIndex={"200"}>
           <Text color="white">Log In</Text>
 
         </Button>
       </Box>
-      <div style={{ 
+      {/* <div style={{ 
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '40%',
           backgroundColor: 'rgba(255, 255, 255, 0.5)',
-          zIndex: 0,
+          zIndex: 1,
           overflow: 'hidden'
 
         }}>
-        </div>
+        </div> */}
       <Box
         width="80%"
         maxW="1200px"
@@ -261,6 +294,7 @@ function LandingPage() {
           mb={6}
           color="#4d4d4d"
           mt="20"
+
         >
           Welcome to Quickessays!
         </Text>
@@ -298,7 +332,7 @@ function LandingPage() {
           </Button>
           </>
         )}
-        <Flex justify="space-between" flexDirection={flexdir}>
+        <Flex justify="space-between" flexDirection={flexdir} marginBottom={"20%"}>
 
             <InfoBox 
             price={"2.99$"}
@@ -319,8 +353,12 @@ function LandingPage() {
             context={flexdir}
             />
         </Flex>
-          <MoreInfo isMobile={isMobile}></MoreInfo>
       </Box>
+
+      <Box zIndex={"200"}>
+      <MoreInfo isMobile={isMobile}></MoreInfo>
+      </Box>
+
       <Text opacity={0}>
             break       
       </Text>
@@ -334,6 +372,7 @@ function LandingPage() {
         alignItems="center"
         justifyContent="space-between"
         left="0"
+        marginTop={"10%"}
       >
         
         <Text fontSize="sm" mb={2}>

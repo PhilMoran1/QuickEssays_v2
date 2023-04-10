@@ -89,7 +89,7 @@ function SummaryDrawer(props) {
           p="4"
           minW="100%"
           minH="560px"
-          boxShadow="lg"
+         
           
         //   position="fixed"
           

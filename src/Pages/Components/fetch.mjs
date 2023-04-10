@@ -192,27 +192,49 @@ export async function updateEssayFeedBack(essay_id, feedback) {
         });
 }
 
-// export async function handleFeedBack(subject, about) {
-    
-//   return await fetch(`${URL}/handle-feedback`, {
-//     method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         credentials: 'include',
-//         body: JSON.stringify({
-//           subject: subject,
-//           about: about
-//         })
-//       })
-//         .then(response => response.text())
-//         .then(data => {
-//           console.log(JSON.parse(data))
-//           return JSON.parse(data)
-//         })
-//         .catch(error => {
-//           console.log(error)
-//           return error
 
-//         });
-// } 
+export async function forgotPassword(email) {
+  return await fetch(`${URL}/forgot-password`, {
+    method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: email
+        })
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(JSON.parse(data))
+          return JSON.parse(data)
+        })
+        .catch(error => {
+          console.log(error)
+          return error
+        });
+}
+
+export async function confirmForgotPassword(newPassword, token) {
+  return await fetch(`${URL}/confirm-forgot-password`, {
+    method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          data: {newPassword: newPassword, token: token}
+        })
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log("respo")
+          console.log(data)
+          console.log(JSON.parse(data))
+          return JSON.parse(data)
+        })
+        .catch(error => {
+          console.log(error)
+          return error
+        });
+}

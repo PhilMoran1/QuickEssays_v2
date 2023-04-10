@@ -39,6 +39,7 @@ function Menu(props) {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isTOSopen, setIsTOSopen] = useState(false);
     const [isPPopen, setIsPPopen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 
   
@@ -56,10 +57,23 @@ function Menu(props) {
     const [usrData, setUsrData] = useState('');
 
     useEffect(() => { // retrieve user data from localstorage
+      try {
       const data = (JSON.parse(localStorage.getItem("data"))).data;
       if (data) {
         setUsrData(data);
       }
+    } catch (error) {
+      console.log("couldnt fetch user data")
+    }
+    }, []);
+
+    useEffect(() => {
+      function handleResize() {
+        setIsMobile(window.innerWidth < 768);
+        
+      }
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     
@@ -69,7 +83,7 @@ function Menu(props) {
     return (
       <>
     <SettingsModal isOpen={isSettingsOpen} onClose={closeSettingsModal}/>
-    <PricingModal isOpen={isPricingOpen} onClose={closePricingModal} />
+    <PricingModal isOpen={isPricingOpen} onClose={closePricingModal} isMobile={isMobile}/>
     <HelpModal isOpen={isHelpOpen} onClose={closeHelpModal} />
     <TermsOfService isOpen={isTOSopen} onClose={closeTOS}></TermsOfService>
     <PrivacyPolicy isOpen={isPPopen} onClose={closePP}></PrivacyPolicy>
@@ -89,7 +103,7 @@ function Menu(props) {
           <Button variant="ghost" leftIcon={<FaDollarSign />} onClick={() => setIsPricingOpen(true)}>
             Price
           </Button>
-          <Button variant="ghost" leftIcon={<FaQuestionCircle />} onClick={() => setIsHelpOpen(true)}>
+          <Button variant="ghost" leftIcon={<FaQuestionCircle />} onClick={() => {setIsHelpOpen(true); onClose();}}>
             Help
           </Button>
           <Text fontSize="xl" fontWeight="bold" mt={4} mb={8}>

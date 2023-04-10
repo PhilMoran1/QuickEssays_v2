@@ -1,4 +1,5 @@
 import {
+  Box,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -14,10 +15,10 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Payment from "./Payment/Payment";
-
-function PricingModal({ isOpen, onClose }) {
+import './PricingModal.css'
+function PricingModal({ isOpen, onClose, isMobile }) {
   const [plan, setPlan] = useState({ plan: "basic", price: "2.99$" });
   const [showForm, setShowForm] = useState(false);
 
@@ -48,7 +49,8 @@ function PricingModal({ isOpen, onClose }) {
   const handleCheckout = () => {
     setShowForm(true);
   };
-
+  const [ml, setMl] = useState("0%")
+  useEffect(()=>{if (isMobile) {setMl("-10%")}},[isMobile])
   return (
     <Modal
       isOpen={isOpen}
@@ -67,17 +69,18 @@ function PricingModal({ isOpen, onClose }) {
           {showForm ? (
             <Payment plan={plan} />
           ) : (
-            <>
-              <Table variant="simple" minWidth="100%">
+            <Box>
+              <Table variant="simple" style={{ maxWidth: "100%" }} marginLeft={ml}>
+
                 <Thead>
                   <Tr>
-                    <Th>Plan</Th>
-                    <Th>Essays</Th>
-                    <Th>Retries per essay</Th>
-                    <Th>Price</Th>
+                  <Th width="5%">Plan</Th>
+                  <Th width="5%">Essays</Th>
+                  <Th width="5%">Retries per essay</Th>
+                  <Th width="5%">Price</Th>
                   </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody maxWidth="50%" isResponsive>
                   {plans.map(({ id, name, essays, retries, price }) => (
                     <Tr
                       key={id}
@@ -87,20 +90,21 @@ function PricingModal({ isOpen, onClose }) {
                       _hover={{ bg: "gray.100", cursor: "pointer" }}
                       bg={plan.plan === name.toLowerCase() ? "gray.200" : ""}
                     >
-                      <Td>{name}</Td>
-                      <Td>{essays}</Td>
-                      <Td>{retries}</Td>
-                      <Td>{price}</Td>
+                      <Td width="5%">{name}</Td>
+                      <Td width="5%">{essays}</Td>
+                      <Td width="5%">{retries}</Td>
+                      <Td width="5%">{price}</Td>
                     </Tr>
                   ))}
+                  
                 </Tbody>
               </Table>
               <Flex justifyContent="center" mt={4}>
-                <Button colorScheme="blue" onClick={handleCheckout}>
+                <Button colorScheme="blue" onClick={handleCheckout} margin={"2%"}>
                   Checkout {plan.price}
                 </Button>
               </Flex>
-            </>
+            </Box>
           )}
         </ModalBody>
       </ModalContent>

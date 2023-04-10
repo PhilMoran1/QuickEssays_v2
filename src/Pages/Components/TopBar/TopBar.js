@@ -16,7 +16,7 @@ import {
 function TopBar(props) {
   const nav = useNavigate();
   const [searchText, setSearchText] = useState("");
-
+  const [noItems,setNoItems] = useState(false)
   const handleSearch = (event) => {
     setSearchText(event.target.value);
     props.onSearch(event.target.value);
@@ -31,6 +31,8 @@ function TopBar(props) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {if (props.noItems != undefined) {setNoItems(props.noItems)}},[])
 
 
   return (
@@ -53,7 +55,8 @@ function TopBar(props) {
         
         )}
       <Stack direction="row" alignItems="center" justifyContent="space-between" margin="0.5%">
-        
+      {!noItems && (
+        <>
         {props.menu == true ? (
           <IconButton
             aria-label="Menu"
@@ -73,6 +76,8 @@ function TopBar(props) {
             variant="outline"
             onClick={() => { nav("/create") }}
           />
+        )}
+        </>
         )}
 
         {/* Logo and Image */}
@@ -105,8 +110,8 @@ function TopBar(props) {
           />)
         }
         
-        {/* Right button */}
-        <Menu showPriceModal={props.showPriceModal}/>
+      {/* Right button */}
+      {!noItems && ( <Menu showPriceModal={props.showPriceModal}/> )}
       </Stack>
       {/* <Stack direction="row" h="1px" bg="gray.300" mt={2} /> */}
 

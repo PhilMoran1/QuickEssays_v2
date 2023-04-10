@@ -7,25 +7,19 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
   Text,
-  Textarea,
-  Alert,
-  AlertIcon,
-  Link
+  Link,
+  VStack,
+  Heading,
+  Divider,
+  List,
+  ListItem,
+  UnorderedList,
 } from "@chakra-ui/react";
 
 function HelpModal({ isOpen, onClose }) {
-  const [subject, setSubject] = useState("");
-  const [about, setAbout] = useState("");
-  const [response, setResponse] = useState(false);
 
-  useEffect(() => {
-    if (isOpen == false) { setResponse(false) }
-  },[isOpen])
+ 
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -34,39 +28,55 @@ function HelpModal({ isOpen, onClose }) {
         <ModalHeader>Help</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {/*<FormControl>
-             <FormLabel>Subject</FormLabel>
-            <Input
-              placeholder="Enter subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>About (Max 500 characters)</FormLabel>
-            <Textarea
-                placeholder="Enter message"
-                value={about}
-                onChange={(e) => setAbout(e.target.value)}
-                maxLength={500}
-                resize="vertical"
-                size="sm"
-                />
+        <VStack spacing={6} align="stretch">
+        <Text fontSize="lg">
+              We're here to help! Below you'll find some helpful information to
+              get you started. If you don't find what you're looking for, don't
+              hesitate to reach out to us at{" "}
+              <Link href="mailto:support@quickessays.app">
+                support@quickessays.app
+              </Link>{" "}
+              and we'll get back to you as soon as we can.
+            </Text>
+            <Divider />
+            <Heading size="sm" color="gray.700">
+              Frequently Asked Questions
+            </Heading>
+            <UnorderedList fontSize="md" pl={4}>
+              <ListItem>
+                <Text>
+                  <strong>What is QuickEssays?</strong> QuickEssays is an
+                  online platform that provides high-quality custom writing
+                  services to students and professionals all over the world.
+                </Text>
+              </ListItem>
+              <ListItem>
+                <Text>
+                  <strong>How do I purchase?</strong> To purchase a package,
+                  simply click the "Prices" button on our menu and follow the
+                  instructions.
+                </Text>
+              </ListItem>
+              <ListItem>
+                <Text>
+                  <strong>What types of essays do you write?</strong> We
+                  write any essay you want All essays are
+                  completely customizable!
+                </Text>
+              </ListItem>
+              
+              <ListItem>
+                <Text>
+                  <strong>How do I pay for my order?</strong> We accept payments
+                  via Stripe, which is a secure and reliable payment processor
+                  used by many online businesses. You can pay using any major
+                  credit card or debit card.
+                </Text>
+              </ListItem>
+            </UnorderedList>
 
-          </FormControl>
-          <Flex justifyContent="center" mt={4}>
-            <Button colorScheme="blue" onClick={handleSend}>
-              Send
-            </Button>
-          </Flex>
-          {response && (
-            <Alert status={response.status} mt={4}>
-              <AlertIcon />
-              {response.message}
-            </Alert>
-          )} */}
-      <Text>If you have any questions or need help, please contact us at <Link href="mailto:support@quickessays.app">support@quickessays.app</Link> And we'll get in touch as soon as we can. You can also find more information about our prices by visiting our pricing page. If you need to change your password, please visit settings page.</Text>
-             </ModalBody>
+          </VStack>
+        </ModalBody>
       </ModalContent>
     </Modal>
   );

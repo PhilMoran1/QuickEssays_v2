@@ -96,7 +96,10 @@ useEffect(() => {
   
   useEffect(() => {
     try {
-      setFilteredSquares(essays.data.filter(square =>
+      console.log(essays)
+      const new_essays = essays.data.sort((a, b) => new Date(b.last_interaction) - new Date(a.last_interaction));
+      console.log(new_essays)
+      setFilteredSquares(new_essays.filter(square =>
         square.title.toLowerCase().includes(searchText.toLowerCase())
       ))
     } catch (error) {
@@ -164,7 +167,13 @@ useEffect(() => {
         p={2}
         onClick={() => { handleEssaySelect(square) }}
         maxW="400px"
-        minW="400px"
+        minW={"300px"}
+        _hover={{
+          cursor: "pointer",
+          // backgroundColor: "gray.200",
+          transform: "scale(1.05)",
+        }}
+        transition="all 0.3s ease-out"
       >
         <Box bg="gray.200" p={4} borderRadius="md" position="relative" >
           <Box display="flex" justifyContent="space-between" alignItems="center">

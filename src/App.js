@@ -12,13 +12,14 @@ import HomePage from './Pages/HomePage/HomePage';
 import ViewPage from './Pages/ViewPage/ViewPage';
 import MultiStepForm from './Pages/StepFormPage/StepFormPage';
 import { ChakraProvider } from '@chakra-ui/react'
+import ForgotPassword from './Pages/ForgotPasswordPage/ForgotPassword';
 
 const router = createBrowserRouter([
     {path: '/', element:  <LandingPage />},
     {path: '/home', element:  <HomePage />},
     {path: '/view', element:  <ViewPage />},
     {path: '/create', element:  <MultiStepForm />},
-    {path: '/forgot-password', element:  <MultiStepForm />}
+    {path: '/forgot-password', element:  <ForgotPassword />}
 ]);
 
 
