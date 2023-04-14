@@ -1,6 +1,7 @@
 
-const URL = "https://f8c0-37-133-87-18.eu.ngrok.io"
-// const URL = "http://localhost:3001"
+// const URL = "https://062b-37-133-87-18.ngrok-free.app"
+// const URL = "http://localhost:3000"
+const URL = "http://34.125.109.24"
 
 export async function fetchEssays(usrData) {
     return await fetch(`${URL}/retrieve-data`, {
@@ -10,7 +11,7 @@ export async function fetchEssays(usrData) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: usrData.data.id,
+        id: "1",
       })
     })
       .then(response => response.text())
@@ -154,13 +155,13 @@ export async function changePassword(usrData,oldPassword,newPassword) {
         },
         credentials: 'include',
         body: JSON.stringify({
-          data: { email: usrData.data.email, oldPassword: oldPassword, newPassword: newPassword}
-
+          email: usrData.data.email,
+          oldPassword: oldPassword,
+          newPassword: newPassword
         })
       })
         .then(response => response.text())
         .then(data => {
-          console.log(JSON.parse(data))
           return JSON.parse(data)
         })
         .catch(error => {
@@ -178,7 +179,8 @@ export async function updateEssayFeedBack(essay_id, feedback) {
         },
         credentials: 'include',
         body: JSON.stringify({
-          data: { feedback: feedback, essay_id: essay_id }
+          feedback: feedback,
+          essay_id: `${essay_id}`
         })
       })
         .then(response => response.text())
@@ -223,7 +225,8 @@ export async function confirmForgotPassword(newPassword, token) {
         },
         credentials: 'include',
         body: JSON.stringify({
-          data: {newPassword: newPassword, token: token}
+          newPassword: newPassword,
+          token: token
         })
       })
         .then(response => response.text())

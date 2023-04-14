@@ -51,10 +51,10 @@ function LandingPage() {
     const closePP = () => setIsPPopen(false);
 
     const handleLoginOpen = () => setShowLoginModal(true);
-    const handleLoginClose = () => setShowLoginModal(false);
+    const handleLoginClose = () => {setShowLoginModal(false); setAlert(false)};
   
     const handleSignupOpen = () => setShowSignupModal(true);
-    const handleSignupClose = () => setShowSignupModal(false);
+    const handleSignupClose = () => {setShowSignupModal(false); setAlert(false)};
 
     
     const handleLoginSubmit = (e) => {

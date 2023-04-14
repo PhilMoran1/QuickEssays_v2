@@ -139,7 +139,7 @@ const MoreInfo = (props) => {
   gap={4}
   width="100%"
   alignItems="center"
-  marginTop={"10%"}
+  
 >
   <GridItem colSpan={1}>
     <Box sx={boxStyles2}>

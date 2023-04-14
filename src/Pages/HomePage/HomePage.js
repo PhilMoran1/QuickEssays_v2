@@ -54,7 +54,7 @@ function HomePage() {
     
         let update = usrData;
         update.data = result.usr;
-        
+      
         if (result.data.length < 1) {setShowMessage(true)}
         localStorage.setItem("data", JSON.stringify(update));
         setEssays(result)
@@ -96,9 +96,7 @@ useEffect(() => {
   
   useEffect(() => {
     try {
-      console.log(essays)
       const new_essays = essays.data.sort((a, b) => new Date(b.last_interaction) - new Date(a.last_interaction));
-      console.log(new_essays)
       setFilteredSquares(new_essays.filter(square =>
         square.title.toLowerCase().includes(searchText.toLowerCase())
       ))
@@ -127,7 +125,6 @@ useEffect(() => {
   }
 
   const closePricingModal = () => setShowPriceModal(false);
-  console.log(showMessage)
   return (
     <>
     <PricingModal isOpen={showPriceModal} onClose={closePricingModal}></PricingModal>

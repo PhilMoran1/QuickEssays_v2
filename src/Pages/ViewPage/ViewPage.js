@@ -7,6 +7,7 @@ import html2pdf from 'html2pdf.js';
 import { FaFilePdf } from "react-icons/fa";
 import { css } from "@emotion/react";
 import ReactPaginate from 'react-paginate';
+// import htmlToRtf from 'html-to-rtf';
 
 import { decompressString } from "../Components/decompress.mjs";
 
@@ -130,7 +131,6 @@ useEffect(() => {
       if (sanitized == undefined) {
         return [];
       }
-      console.log(sanitized)
   
       let maxPageLength;
       if (isMobile) { maxPageLength = 1500}
@@ -222,10 +222,29 @@ useEffect(() => {
       
       html2pdf().from(tempElement).set(options).save();
     }
-
+  
+    // const convertHtmlToRtf = () => {
+    //   const rtfString = htmlToRtf(sanitized);
+    
+    //   // Create a blob from the RTF string
+    //   const blob = new Blob([rtfString], { type: 'text/rtf' });
+    
+    //   // Create a download link for the blob
+    //   const link = document.createElement('a');
+    //   link.href = URL.createObjectURL(blob);
+    //   link.download = `${formData.title}.rtf`;
+    
+    //   // Trigger a click event on the link to download the file
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
+    // }
+    
 
   const handleDownload = () => {
-      downloadPdf();
+      // downloadPdf();
+      // convertHtmlToRtf();
+
   };
 
   const handleLike = () => {
@@ -264,7 +283,7 @@ useEffect(() => {
   alignItems="center"
   spacing={5}
 >
-  <DownloadPdfButton onDownload={handleDownload} isMobile={isMobile} />
+  {/* <DownloadPdfButton onDownload={handleDownload} isMobile={isMobile} /> */}
   <IconButton
     icon={<FaThumbsUp />}
     aria-label="like button"
