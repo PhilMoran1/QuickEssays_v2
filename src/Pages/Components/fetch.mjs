@@ -1,7 +1,7 @@
 
 // const URL = "https://062b-37-133-87-18.ngrok-free.app"
 // const URL = "http://localhost:3000"
-const URL = "http://34.125.109.24"
+const URL = "https://34.125.109.24"
 
 export async function fetchEssays(usrData) {
     return await fetch(`${URL}/retrieve-data`, {
