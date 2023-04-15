@@ -1,7 +1,7 @@
 
 // const URL = "https://062b-37-133-87-18.ngrok-free.app"
-// const URL = "http://localhost:3000"
-const URL = "https://quickessays.app"
+const URL = ""
+// const URL = "https://quickessays.app"
 
 export async function fetchEssays(usrData) {
     return await fetch(`${URL}/retrieve-data`, {
